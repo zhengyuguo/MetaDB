@@ -3,8 +3,21 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<!--
+#home page contains the search option
+#to populate the drop down in search criteria back-end provide the full list of the following data
+1.Gene Name
+2.Disease Name
+3.Tissue Type
+#required data from back end-- back end provides the following data after querying the database based on search criteria
+1.AccessionID
+2.Title
+3.Gene Name
+4.Disease Name
+5.Tissue Type
+ -->
 <div class="col-md-12">
-<form class="form-inline">
+<form class="form-inline" action="{{ url_for('home') }}" method=get>
   <div class="form-group">
     <label for="keyword">Key Word:</label>
     <input type="text" class="form-control" id="keyword">
@@ -12,6 +25,7 @@
   <div class="form-group">
     <label for="genename">Gene Name:</label>
     <select class="form-control" id="genename">
+	<!-- will be replaced by full list of Gene Name from database-->
       <option>All</option>
   <option>WT</option>
   <option>Ago2 fl/fl</option>
@@ -20,6 +34,7 @@
   <div class="form-group">
     <label for="diseasename">Disease Name:</label>
      <select class="form-control" id="diseasename">
+	 <!-- will be replaced by full list of Disease Name from database-->
       <option>All</option>
   <option>Retinitis Pigmentosa </option>
   <option>inflammation</option>
@@ -28,6 +43,7 @@
     <div class="form-group">
     <label for="tissuetype">Tissue Type:</label>
      <select class="form-control" id="tissuetype">
+	 <!-- will be replaced by full list of TissueType from database-->
       <option>All</option>
   <option>mouse epithelial cells</option>
   <option>mouse Liver</option>
@@ -38,10 +54,10 @@
 <div class="space"></div>
 
 <div class="table-responsive">
-<table id="myTable" class="display">
+<table id="searchTable" class="display">
 <thead>
 <tr>
-<th>Accession ID</th>
+<th>Accession ID</th> 
 <th>Title</th>
 <th>Gene Name</th>
 <th>Disease Name</th>
@@ -49,15 +65,17 @@
 </tr>
 </thead>
 <tbody>
+<!--replace by data from data base based on search criteria -->
 <tr>
-<td>E-GEOD-57648</td>
+<!--  Accession ID will have link to datasets.html page.  -->
+<td><a href="{{ url_for('datasets') }}">E-GEOD-57648</a></td>
 <td>Effect of Rps5 heterozygous deletion on embryonic stem cells transcriptome</td>
 <td>N/A</td>
 <td>Rps5+/-</td>
 <td>embryonic stem cells (WT and RPs5KO)</td>
 </tr>
 <tr>
-<td>E-GEOD-57648</td>
+<td><a href="{{ url_for('datasets') }}">E-GEOD-57648</a></td>
 <td>Comparison of tamoxifen and letrozole response in mammary preneoplasia of ER and aromatase over-expressing mice defines an immune-associated gene signature linked to tamoxifen resistance
 </td>
 <td>N/A</td>
@@ -70,7 +88,7 @@
 </div><!-- close col-md-12 .*-inner (main-content or sidebar, depending if sidebar is used) -->
 <script>
 $(document).ready(function(){
-    $('#myTable').DataTable();
+    $('#searchTable').DataTable();
 });
 </script>
 

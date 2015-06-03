@@ -20,5 +20,9 @@ def datasets():
 @app.route('/contactus/')
 def contactus():
 	return render_template('contactus.html')
+@app.route('/jsondata/')
+def jsondata():
+ return render_template('jsondata.html')
+
 if __name__ == "__main__":
   app.run(debug=True)
