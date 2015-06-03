@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"> </script>
+	<link rel="stylesheet" href="http://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+	 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <title>{% block title %}{% endblock %}RNASeqMetaDB</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="Developer" content="Designed and developed by Md Abu Obaida, email. tareqbuet@gmail.com">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+    {% endblock %}
+  </head>
+  <body>
+        <div class="main-content gradient">  
+         
+            <div class="container" style="position: relative">
+                 <header class="footer-bg">
+                <div class="row">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+
+               	 <nav class="navbar-custom navbar navbar-fixed-top " role="navigation"> 
+				  <div class="container">
+                         <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+                        
+    </div>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="{{url_for('home')}}">Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="{{url_for('submission')}}">Dataset Submission</a></li>
+		<li><a href="{{url_for('statistics')}}">Statistics</a></li>
+		<li><a href="{{url_for('datasets')}}">Datasets</a></li>
+		<li><a href="{{url_for('contactus')}}">Contact Us</a></li>
+		</ul>
+		</div>
+		</div> <!-- close container -->
+		</nav>
+		</div><!-- close .row -->
+		</header>
+		  <div class="row">
+                <div class="col-md-12">
+                 <div class='banner space '>
+    <img class="img-responsive" src="{{url_for('static',filename='resources/img/rna_banner.png')}}">
+</div>   
+                </div>
+              
+            </div>
+            </div>
+
+	<div class="container white-bg">
+
+		<div class="row">
+			
+    {% block content %}{% endblock %}
+      {% block footer %}
+     
+			
+		</div><!-- close .row -->
+	</div><!-- close .container -->
+
+
+                   
+
+<footer id="colophon" class="site-footer" role="contentinfo">
+	<div class="container white-bg">
+            <div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="site-info">
+					<p style="text-align: center; margin: 10px;">All Content &copy 2015, RNASeqMetaDB, All Rights Reserved</p>
+                                        
+				</div><!-- close .site-info -->
+			
+			</div>	
+		</div>
+                </div>
+	</div><!-- close .container -->
+</footer><!-- close #colophon -->
+<script>
+$(document).ready(function() {
+    $('a[href="' + this.location.pathname + '"]').parent().addClass('active');
+});
+</script>
+      {% endblock %}
+    </div>
+  </body>
+</html>
+

@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<div class="col-md-12">
+<form class="form-inline">
+  <div class="form-group">
+    <label for="keyword">Key Word:</label>
+    <input type="text" class="form-control" id="keyword">
+  </div>
+  <div class="form-group">
+    <label for="genename">Gene Name:</label>
+    <select class="form-control" id="genename">
+      <option>All</option>
+  <option>WT</option>
+  <option>Ago2 fl/fl</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="diseasename">Disease Name:</label>
+     <select class="form-control" id="diseasename">
+      <option>All</option>
+  <option>Retinitis Pigmentosa </option>
+  <option>inflammation</option>
+    </select>
+  </div>
+    <div class="form-group">
+    <label for="tissuetype">Tissue Type:</label>
+     <select class="form-control" id="tissuetype">
+      <option>All</option>
+  <option>mouse epithelial cells</option>
+  <option>mouse Liver</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<div class="space"></div>
+
+<div class="table-responsive">
+<table id="myTable" class="display">
+<thead>
+<tr>
+<th>Accession ID</th>
+<th>Title</th>
+<th>Gene Name</th>
+<th>Disease Name</th>
+<th>TissueType</th> 
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E-GEOD-57648</td>
+<td>Effect of Rps5 heterozygous deletion on embryonic stem cells transcriptome</td>
+<td>N/A</td>
+<td>Rps5+/-</td>
+<td>embryonic stem cells (WT and RPs5KO)</td>
+</tr>
+<tr>
+<td>E-GEOD-57648</td>
+<td>Comparison of tamoxifen and letrozole response in mammary preneoplasia of ER and aromatase over-expressing mice defines an immune-associated gene signature linked to tamoxifen resistance
+</td>
+<td>N/A</td>
+<td>Rps5+/-</td>
+<td>embryonic stem cells (WT and RPs5KO)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div><!-- close col-md-12 .*-inner (main-content or sidebar, depending if sidebar is used) -->
+<script>
+$(document).ready(function(){
+    $('#myTable').DataTable();
+});
+</script>
+
+{% endblock %}
