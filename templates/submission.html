@@ -3,40 +3,43 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<!--
+will keep track of every submission in database. Administrator will be able to approve/disapprove the submission
+-- back-end: take data from the form ("inqueryForm")and store in database
+-->
 		<div class="col-md-8 col-md-offset-3">
 		<h3 style="margin-bottom:15px">Submit Your Inquery</h2>
-		
-		
 		</div>
-			<div class="form-horizontal" id="inqueryForm" style="margin-top:30px">
+		
+			<form action="{{ url_for('submission') }}" method=get class="form-horizontal" id="inqueryForm" style="margin-top:30px">
 			  <div class="form-group">
 			    <label for="AccessionID" class="col-sm-3 control-label">Accession ID:</label>
 			    <div class="col-sm-5">
-			      <input class="form-control" id="AccessionID" placeholder="GEO/ArrayExpress Accession ID">
+			      <input type="text" class="form-control" id="AccessionID" placeholder="GEO/ArrayExpress Accession ID">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="PubMedID" class="col-sm-3 control-label">PubMed ID (optional):</label>
 			    <div class="col-sm-5">
-			      <input class="form-control" id="PubMedID">
+			      <input type="text" class="form-control" id="PubMedID">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="YourName" class="col-sm-3 control-label">Your Name:</label>
 			    <div class="col-sm-5">
-			      <input class="form-control" id="YourName">
+			      <input type="text" class="form-control" id="YourName">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="YourEmail" class="col-sm-3 control-label">Your Email:</label>
 			    <div class="col-sm-5">
-			      <input class="form-control" id="YourEmail">
+			      <input type="email" class="form-control" id="YourEmail">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="comments" class="col-sm-3 control-label">Comments (optional):</label>
 			    <div class="col-sm-5">
-			      <input class="form-control" id="Comments" style="height:100px">
+			      <textarea class="form-control" id="Comments"></textarea>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -44,7 +47,7 @@
 			      <button type="submit" class="btn btn-primary" id="inquerySub">Submit</button>
 			    </div>
 			  </div>
-			</div>
+			</form>
 
 
 {% endblock%}

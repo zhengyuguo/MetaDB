@@ -3,6 +3,17 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<!-- //obaida
+back-end will provide data for the below charts-
+1.Publications by Geographic Location(Number of publication by each geographic area)
+2.Publications by Journal(Number of publication by each journal, take top 5 journal, rest of them put it in "other" category)
+3.Publications by Research area(Number of publication by each research area)
+4.Publications by Disease(Number of publication by each disease)
+
+*** I am not sure how to provide data from python to javascript in google chart. Please check the below link
+https://developers.google.com/chart/interactive/docs/dev/gviz_api_lib 
+to get idea about that.
+-->
 <div role="tabpanel">
 <div class="col-sm-3 sidebar">
   <!-- Nav tabs -->
@@ -43,6 +54,7 @@
       var data = new google.visualization.DataTable();
       data.addColumn('string', 'Country');
       data.addColumn('number', 'Publications');
+	  //will be replaced by real data from database
       data.addRows([
         ['USA', 3],
         ['Canada', 1],
@@ -54,11 +66,22 @@
 	        var data_journal = new google.visualization.DataTable();
       data_journal.addColumn('string', 'Journal');
       data_journal.addColumn('number', 'Publications');
+	  //will be replaced by real data from database
       data_journal.addRows([
         ['Nature', 3],
         ['Molecular Cell', 1],
         ['Other', 1]
       ]);
+	  
+	  //try to use json data, **experimental
+	  var jsonData = $.ajax({
+          url: "http://127.0.0.1:5000/jsondata/",
+          dataType:"json",
+          async: true
+          }).responseText;
+     // Create our data table out of JSON data loaded from server.
+      var jdata = new google.visualization.DataTable(jsonData);
+
 
       // Set chart options
       var options = {'title':'Publications by Geographic Location',
@@ -78,7 +101,7 @@
 	  	  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
       chart.draw(data_journal, options_journal);
 	    var chart = new google.visualization.PieChart(document.getElementById('chart_div4'));
-      chart.draw(data, options);
+      chart.draw(jdata, options);
 	  
     }
     </script>
