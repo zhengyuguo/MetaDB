@@ -140,6 +140,7 @@ def getAllInfor(AccessionID):
 		data['ResearchArea'] = query.ResearchArea
 
 		query = session.query(Gene).filter_by(ArrayExpress = AccessionID).all()
+		data['Gene'] = []
 		data['Gene'] = [ x['Gene'] for x in query ]
 		data['GeneMGI'] = [ x['GeneMGI'] for x in query ]
 
