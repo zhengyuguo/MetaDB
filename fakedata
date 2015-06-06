@@ -1,0 +1,42 @@
+insert into main ( ArrayExpress , GEO,Title, description,OtherFactors,PI,email,Website,GeoArea,ResearchArea) values( '1', '1','Title1', 'description1', 'OtherFactors1','PI1','email1','Website1','GeoArea1','ResearchArea1');
+
+insert into gene(ArrayExpress,Gene,GeneMGI) values(  '1', 'Gene1', 'GeneMGI1');
+insert into gene(ArrayExpress,Gene,GeneMGI) values(  '1', 'Gene2', 'GeneMGI2');
+
+insert into disease(  ArrayExpress, disease, diseaseMesh) values(  '1', 'disease1', 'diseaseMesh1');
+
+insert into tissue(  ArrayExpress, Tissue, TissueID)  values(  '1', 'Tissue1', 'TissueID1');
+
+insert into genotype(ArrayExpress,Genotype) values(  '1', 'Genotype1');
+
+insert into publication(ArrayExpress,PubMed, Title, Abstract, Journal, Year ) values(  '1', '1','First publication', 'abstract for', 'Bio-jounal','2012');
+
+insert into publication_Author(ArrayExpress,PubMed, Author) values(  '1', '1', 'Zhengyu');
+insert into publication_Author(ArrayExpress,PubMed, Author) values(  '1', '1', 'Obaida');
+
+insert into publication_Keyword(ArrayExpress,PubMed, keyword) values(  '1', '1', 'Gene');
+insert into publication_Keyword(ArrayExpress,PubMed, keyword) values(  '1', '1', 'Disease');
+
+
+
+
+
+insert into main ( ArrayExpress , GEO,Title, description,OtherFactors,PI,email,Website,GeoArea,ResearchArea) values( '2', '2','Title2', 'description2', 'OtherFactors2','PI2','email2','Website2','GeoArea2','ResearchArea2');
+
+insert into gene(ArrayExpress,Gene,GeneMGI) values(  '2', 'Gene2', 'GeneMGI2');
+insert into gene(ArrayExpress,Gene,GeneMGI) values(  '2', 'Gene1', 'GeneMGI2');
+
+insert into disease(  ArrayExpress, disease, diseaseMesh) values(  '2', 'disease2', 'diseaseMesh2');
+
+insert into tissue(  ArrayExpress, Tissue, TissueID)  values(  '2', 'Tissue2', 'TissueID2');
+
+insert into genotype(ArrayExpress,Genotype) values(  '2', 'Genotype2');
+
+insert into publication(ArrayExpress,PubMed, Title, Abstract, Journal, Year ) values(  '2', '2','Second publication', 'abstract for', 'Bio-jounal-22','2011');
+
+insert into publication_Author(ArrayExpress,PubMed, Author) values(  '2', '2', 'Zhengyu');
+insert into publication_Author(ArrayExpress,PubMed, Author) values(  '2', '2', 'Obaida');
+
+insert into publication_Keyword(ArrayExpress,PubMed, keyword) values(  '2', '2', 'Gene');
+insert into publication_Keyword(ArrayExpress,PubMed, keyword) values(  '2', '2', 'Disease');
+
