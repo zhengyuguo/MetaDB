@@ -14,7 +14,7 @@ import datetime
 app = Flask(__name__)
 
 
-engine =  create_engine('mysql://root:mysql@localhost:3306/metaDB')  #should change the password to the one you use in your local machine
+engine =  create_engine('mysql://root@localhost/metadb')  #should change the password to the one you use in your local machine
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -103,10 +103,10 @@ def submission():
 
 
 ##  show the information of the dataset by accessionID
-@app.route('/index/<AccessionID>/')
-def datasets(AccessionID):
-	dataRow = getAllInfor(AccessionID)
-	return render_template('show.html',dataRow = dataRow) # show.html undefined
+#@app.route('/index/<AccessionID>/')
+#def datasets(AccessionID):
+#	dataRow = getAllInfor(AccessionID)
+#	return render_template('show.html',dataRow = dataRow) # show.html undefined
 
 
 
@@ -121,6 +121,16 @@ def datasets():
 @app.route('/contactus/')
 def contactus():
 	return render_template('contactus.html')
+@app.route('/login/')
+def login():
+	return render_template('login.html')
+@app.route('/createaccount/')
+def createaccount():
+	return render_template('createaccount.html')
+@app.route('/logout/')
+def logout():
+	return redirect('/index/')
+	
 
 
 # User Helper Functions
@@ -158,7 +168,7 @@ def getAllInfor(AccessionID):
 		data['PubMed'] = [ x['PubMed'] for x in query ] 
 		data['Publication'] =  [ x['Title'] for x in query ] 
 
-        return data
+		return data
     except:
         return None
 
@@ -168,4 +178,4 @@ def get_All_Items_From(table):
 
 if __name__ == '__main__':
 	app.debug = True
-	app.run(host = '0.0.0.0', port = 5000)
+	app.run()

@@ -49,6 +49,19 @@
 		<li><a href="{{url_for('datasets')}}">Datasets</a></li>
 		<li><a href="{{url_for('contactus')}}">Contact Us</a></li>
 		</ul>
+		 <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+		<!-- replace "welcome guest" with logged in username, elase leave it-->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome Guest! <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+		  <!-- will be visible if not loggedin -->
+            <li><a href="{{url_for('login')}}">Login</a></li>
+            <li><a href="{{url_for('createaccount')}}">Create Account</a></li>
+			<!-- will be visible if loggedin -->
+			<li><a href="{{url_for('logout')}}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
 		</div>
 		</div> <!-- close container -->
 		</nav>
