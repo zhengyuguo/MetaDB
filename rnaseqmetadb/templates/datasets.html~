@@ -83,7 +83,7 @@ Lab Website
 <tr>
 <td>PubMed</td>
 <td>
-{% for PubMed in dataRow["PubMed"] %}
+{% for disease in dataRow["PubMed"] %}
 	{{PubMed}} &nbsp&nbsp
 {% endfor %}
 </td>
