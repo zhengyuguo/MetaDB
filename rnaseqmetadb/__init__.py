@@ -108,11 +108,6 @@ def datasets(AccessionID):
 	dataRow = getAllInfor(AccessionID)
 	return render_template('show.html',dataRow = dataRow) # show.html undefined
 
-
-
->>>>>>> remotes/tareqobaida/rnaseqmetadb/master
-
-
 @app.route('/statistics/')
 def statistics():
 	return render_template('statistics.html')
