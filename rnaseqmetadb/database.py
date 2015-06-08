@@ -218,7 +218,7 @@ class Accession(Base):
 			'downloadedtimes':self.downloadedtimes,
 		}
 
-engine =  create_engine('mysql://root:mysql@localhost:3306/metaDB')
+engine =  create_engine('mysql://root@localhost/metadb')
 
 
 Base.metadata.create_all(engine)
