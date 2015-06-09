@@ -87,7 +87,7 @@ def home():
 @app.route('/submission/',   methods=['GET', 'POST'] )
 def submission():
 	if request.method == 'GET':
-		return render_template('submission.html') # inquery.html undefined
+		return render_template('submission.html') 
 	else:
 		inquery = Inquery(ArrayExpress = request.form.get('AccessionID'),
 						PubMed = request.form.get('PubMedID'),
@@ -103,21 +103,15 @@ def submission():
 
 
 ##  show the information of the dataset by accessionID
-#@app.route('/index/<AccessionID>/')
-#def datasets(AccessionID):
-#	dataRow = getAllInfor(AccessionID)
-#	return render_template('show.html',dataRow = dataRow) # show.html undefined
-
-
-
-
+@app.route('/index/<AccessionID>/')
+def datasets(AccessionID):
+	dataRow = getAllInfor(AccessionID)
+	return render_template('show.html',dataRow = dataRow) # show.html undefined
 
 @app.route('/statistics/')
 def statistics():
 	return render_template('statistics.html')
-@app.route('/datasets/')
-def datasets():
-	return render_template('datasets.html')
+
 @app.route('/contactus/')
 def contactus():
 	return render_template('contactus.html')
@@ -150,30 +144,38 @@ def getAllInfor(AccessionID):
 		data['ResearchArea'] = query.ResearchArea
 
 		query = session.query(Gene).filter_by(ArrayExpress = AccessionID).all()
-		data['Gene'] = [ x['Gene'] for x in query ]
-		data['GeneMGI'] = [ x['GeneMGI'] for x in query ]
+		print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+		
+		data['Gene'] = [ x.Gene for x in query ]
+		print len(query)
+		data['GeneMGI'] = [ x.GeneMGI for x in query ]
 
 		query = session.query(Genotype).filter_by(ArrayExpress = AccessionID).all()
-		data['Genotype'] =  [ x['Genotype'] for x in query ] 
+		data['Genotype'] =  [ x.Genotype for x in query ] 
 
 		query = session.query(Disease).filter_by(ArrayExpress = AccessionID).all()
-		data['disease'] = [ x['disease'] for x in query ] 
-		data['diseaseMesh'] =  [ x['diseaseMesh'] for x in query ]
+		data['disease'] = [ x.disease for x in query ] 
+		data['diseaseMesh'] =  [ x.diseaseMesh for x in query ]
 
 		query = session.query(Tissue).filter_by(ArrayExpress = AccessionID).all()
-		data['Tissue'] = [ x['Tissue'] for x in query ] 
-		data['TissueID'] = [ x['TissueID'] for x in query ] 
+		data['Tissue'] = [ x.Tissue for x in query ] 
+		data['TissueID'] = [ x.TissueID for x in query ] 
 
 		query = session.query(Publication).filter_by(ArrayExpress = AccessionID).all()
-		data['PubMed'] = [ x['PubMed'] for x in query ] 
-		data['Publication'] =  [ x['Title'] for x in query ] 
+		data['PubMed'] = [ x.PubMed for x in query ] 
+		data['Publication'] =  [ x.Title for x in query ] 
+
+		query = session.query(Publication_Author).filter_by(ArrayExpress = AccessionID).all()
+		data['Author'] = [ x.Author for x in query ] 
+		
+		query = session.query(Publication_Keyword).filter_by(ArrayExpress = AccessionID).all()
+		data['keyword'] = [ x.keyword for x in query ] 
+
 
 		return data
     except:
         return None
 
-def get_All_Items_From(table):
-	query = session.query(table).all()
 
 
 if __name__ == '__main__':
