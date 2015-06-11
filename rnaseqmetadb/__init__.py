@@ -106,7 +106,7 @@ def submission():
 @app.route('/index/<AccessionID>/')
 def datasets(AccessionID):
 	dataRow = getAllInfor(AccessionID)
-	return render_template('show.html',dataRow = dataRow) # show.html undefined
+	return render_template('datasets.html',dataRow = dataRow) # show complete info in datasets.html
 
 @app.route('/statistics/')
 def statistics():
@@ -124,6 +124,12 @@ def createaccount():
 @app.route('/logout/')
 def logout():
 	return redirect('/index/')
+@app.route('/inquiry/')
+def inquiry():
+	return render_template('inquiry.html')
+@app.route('/download/')
+def download():
+	return render_template('download.html')
 	
 
 
