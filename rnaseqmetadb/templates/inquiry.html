@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<!-- 
+This page will only be visible to administrator. Create an extra boolean field (status)in inquiry table
+Admin can approve or disapprove the inquiry. clicking submit button will toggle the status in database if check box is checked.
+ -->
+<div class="col-md-12">
+<div class="table-responsive">
+<table id="inquiryTable" class="table">
+<thead>
+<tr>
+<th>Accession ID</th>
+<th>PubMed ID</th>
+<th>Name</th>
+<th>Email</th>
+<th>Comment</th>
+<th>Status</th>
+<th>Toggle Approval</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data["ID"]</td>
+<td>data["pubmedid]</td>
+<td>data["name"]</td>
+<td>data["email"]</td>
+<td>data["comment"]</td>
+<td>data["status"]</td>
+<td><div class="center-block"><input type="checkbox" id="dataid" ></div></td>
+</tr>
+</tbody>
+</table>
+<div class="form-group pull-right">
+<button type="submit" id="inquiryButton" class="btn btn-primary ">Submit Changes</button>
+</div>
+</div>
+</div>
+{% endblock%}
