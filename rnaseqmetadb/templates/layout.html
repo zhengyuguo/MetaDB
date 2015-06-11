@@ -23,6 +23,7 @@
   No data required from back end in this page
   .....-->
   <body>
+
         <div class="main-content gradient">  
          
             <div class="container" style="position: relative">
@@ -46,19 +47,21 @@
         <li><a href="{{url_for('home')}}">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="{{url_for('submission')}}">Dataset Submission</a></li>
 		<li><a href="{{url_for('statistics')}}">Statistics</a></li>
-		<li><a href="{{url_for('datasets')}}">Datasets</a></li>
 		<li><a href="{{url_for('contactus')}}">Contact Us</a></li>
+		<li><a href="{{url_for('inquiry')}}">Inquiry</a></li>  <!-- Will be visible to only administrator-->
+		<li><a href="{{url_for('download')}}">Download</a></li>
 		</ul>
 		 <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
 		<!-- replace "welcome guest" with logged in username, elase leave it-->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome Guest! <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-		  <!-- will be visible if not loggedin -->
+         <ul class="dropdown-menu" role="menu">
+		  	{% if login_session.get('login') is none %}
             <li><a href="{{url_for('login')}}">Login</a></li>
             <li><a href="{{url_for('createaccount')}}">Create Account</a></li>
-			<!-- will be visible if loggedin -->
+			{% else %}
 			<li><a href="{{url_for('logout')}}">Logout</a></li>
+			{% endif %}
           </ul>
         </li>
       </ul>
@@ -80,6 +83,19 @@
 	<div class="container white-bg">
 
 		<div class="row">
+			<div class = 'flash'>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+
+        	<ul>
+        	{% for message in messages %}
+            	<li> <strong> {{ message }} </strong> </li>
+        	{% endfor %}
+        	</ul>
+        	{% endif %}
+		{% endwith %}
+
+	</div>
 			
     {% block content %}{% endblock %}
       {% block footer %}

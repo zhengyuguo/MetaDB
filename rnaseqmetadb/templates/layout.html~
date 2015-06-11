@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-   
+    {% block head %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	    <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -10,13 +10,32 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
 	 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 	<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <title>RNASeqMetaDB</title>
+    <title>{% block title %}{% endblock %}RNASeqMetaDB</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="Developer" content="Designed and developed by Md Abu Obaida, email. tareqbuet@gmail.com">
 <link rel="profile" href="http://gmpg.org/xfn/11">
-
+    {% endblock %}
   </head>
+  
+  <!-- ......
+  This is the layout for all html pages. contains the structure of all pages and menu.
+  bootstrap is used as css framework
+  No data required from back end in this page
+  .....-->
   <body>
+	<div class = 'flash'>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+
+        	<ul>
+        	{% for message in messages %}
+            	<li> <strong> {{ message }} </strong> </li>
+        	{% endfor %}
+        	</ul>
+        	{% endif %}
+		{% endwith %}
+
+	</div>
         <div class="main-content gradient">  
          
             <div class="container" style="position: relative">
@@ -40,9 +59,24 @@
         <li><a href="{{url_for('home')}}">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="{{url_for('submission')}}">Dataset Submission</a></li>
 		<li><a href="{{url_for('statistics')}}">Statistics</a></li>
-		<li><a href="{{url_for('datasets')}}">Datasets</a></li>
 		<li><a href="{{url_for('contactus')}}">Contact Us</a></li>
+		<li><a href="{{url_for('inquiry')}}">Inquiry</a></li>  <!-- Will be visible to only administrator-->
+		<li><a href="{{url_for('download')}}">Download</a></li>
 		</ul>
+		 <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+		<!-- replace "welcome guest" with logged in username, elase leave it-->
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome Guest! <span class="caret"></span></a>
+         <ul class="dropdown-menu" role="menu">
+		  	{% if login_session.get('login') is none %}
+            <li><a href="{{url_for('login')}}">Login</a></li>
+            <li><a href="{{url_for('createaccount')}}">Create Account</a></li>
+			{% else %}
+			<li><a href="{{url_for('logout')}}">Logout</a></li>
+			{% endif %}
+          </ul>
+        </li>
+      </ul>
 		</div>
 		</div> <!-- close container -->
 		</nav>
@@ -63,7 +97,7 @@
 		<div class="row">
 			
     {% block content %}{% endblock %}
-
+      {% block footer %}
      
 			
 		</div><!-- close .row -->
@@ -92,7 +126,7 @@ $(document).ready(function() {
     $('a[href="' + this.location.pathname + '"]').parent().addClass('active');
 });
 </script>
-  
+      {% endblock %}
     </div>
   </body>
 </html>
