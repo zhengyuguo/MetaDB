@@ -8,9 +8,13 @@ cross site attack: how to avoid?
 
 
 inquiry.html:
-	This page is invisibal.
+	This page is invisible. Super code should be provided to get the right to manage.
 	when manager visit this page, password is reqired to verify the user's identification.
 	Add status into the corresponding table.
+	status:
+		unprocessed
+		unapproved
+		approved
 
 download.html:
 	Downloading link should be provided in this page.
@@ -27,3 +31,7 @@ Forms:
 
 search by keyword:
 	Too many results.
+	How to exploit different search restrictions.
+
+
+	
