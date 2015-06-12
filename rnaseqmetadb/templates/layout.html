@@ -54,7 +54,11 @@
 		 <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
 		<!-- replace "welcome guest" with logged in username, elase leave it-->
+		  {% if login_session.get('login') is none%}
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome Guest! <span class="caret"></span></a>
+			{% else %}
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Welcome {{login_session.get('user')}}! <span class="caret"></span></a>
+		{% endif %}
          <ul class="dropdown-menu" role="menu">
 		  	{% if login_session.get('login') is none %}
             <li><a href="{{url_for('login')}}">Login</a></li>

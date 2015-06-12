@@ -3,7 +3,7 @@ from flask import session as login_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Main, Gene, Genotype, Disease, Tissue, Publication, Publication_Author, Publication_Keyword, Inquery, Accession
-
+from webSearch import *
 import random, string
 import httplib2
 import json
@@ -106,6 +106,9 @@ def submission():
 @app.route('/index/<AccessionID>/')
 def datasets(AccessionID):
 	dataRow = getAllInfor(AccessionID)
+	if not dataRow:
+		flas
+		return redirect(url_for('home'))
 	return render_template('datasets.html',dataRow = dataRow,login_session = login_session) # show complete info in datasets.html
 
 @app.route('/contactus/')
@@ -117,16 +120,17 @@ def login():
 	if request.method == 'POST':
 		email = request.form['email']
 		password = request.form['password']
-		print email
 		UserPassword = getUserPassword(email)
 		if not UserPassword:
 			flash("Account: %s doesn't exist." % email)
 			return render_template('login.html',login_session = login_session)
-		if password == UserPassword:   #check the input email has been used or not
-			flash('Wrong email or password: %s' %password)
+		if password != UserPassword:   #check the input email has been used or not
+			flash('Wrong email or password.')
 			return render_template('login.html',login_session = login_session) 
 		login_session['email'] = email #record the login
 		login_session['login'] = True 
+		user = session.query(Accession).filter_by(email=email).one()
+		login_session['user'] = user.name
 		return redirect(url_for('home'))
 	else:
 		return render_template('login.html',login_session = login_session)
@@ -147,11 +151,6 @@ def createaccount():
 		if len(password) > 15:
 			flash('The length of password should contain at most 15 characters.')
 			return render_template('createaccount.html',login_session = login_session) 
-		'''
-		currentdatetime  = datetime.datetime.utcnow
-		fourday=datetime.timedelta(days=4)   
-   		expirationdate = currentdatetime +  fourday    
-		'''
 		name = request.form['firstname'] +" "+request.form['lastname']
 		newShop = Accession(name=name,
 							randomcode = "111",
@@ -172,6 +171,7 @@ def logout():
 	email = login_session['email']
 	del login_session['email']
 	del login_session['login']
+	del login_session['user']
 	flash('Account %s has been logged out.' % email)
 	return redirect(url_for('home'))
 
