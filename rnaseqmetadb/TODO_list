@@ -18,6 +18,8 @@ download.html:
 
 statistc.html:
 	JSON
+	no Geographic location
+	no research area
 
 
 Forms: 

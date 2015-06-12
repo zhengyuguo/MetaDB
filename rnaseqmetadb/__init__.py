@@ -19,12 +19,11 @@ app = Flask(__name__)
 @app.route('/index/')
 def home():
 	keyword = request.args.get("keyword")
-	if not keyword:
-		[gene_names, disease_names, tissue_names, DATAs] = getAllData()
-		return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
-	else:
+	[gene_names, disease_names, tissue_names, DATAs] = getAllData()
+	if keyword:
 		AccessionIDS = getAccessionID(keyword)
-		print len(AccessionIDS)
+		DATAs = getInforByID(AccessionIDS)
+	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 
 
 
@@ -126,8 +125,9 @@ def download():
 
 @app.route('/statistics/')
 def statistics():
-	
-	return render_template('statistics.html',login_session = login_session)
+	statistics = jsonify(getStatistics())
+	#return statistics
+	return render_template('statistics.html',statistics = statistics,login_session = login_session)
 
 
 

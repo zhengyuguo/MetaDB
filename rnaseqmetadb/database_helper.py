@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Main, Gene, Genotype, Disease, Tissue, Publication, Publication_Author, Publication_Keyword, Inquery, Accession
+import json
 
 engine =  create_engine('mysql://root:mysql@localhost/metaDB')  #should change the password to the one you use in your local machine
 Base.metadata.bind = engine
@@ -41,6 +42,7 @@ def getAllInquery():
 		
 
 def getAllData():
+	'''Query each table and combine the information together'''
 	try:
 		query_gene = session.query(Gene).all()
 		#return query_gene[0].Gene
@@ -90,10 +92,43 @@ def getAllData():
 	except:
 		return [None, None, None, None]
 
-
+def getInforByID(IDs):
+	'''Query the main table for AccessionIDs'''
+	DATAs = []
+	for ID in IDs:
+		try:
+			query = session.query(Main).filter_by(ArrayExpress = ID).one()
+		except:
+			continue
+		data  = {}                           # a dictionary containing data will be transmitted
+		title = query.Title 
+		ID = query.ArrayExpress
+		data["ID"] = ID
+		data["title"] = title
+		####################### gene queried by ID ##########
+		query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
+		gene = ""
+		for g in query_gene:
+			gene = gene+ " " + g.Gene
+		data["gene"] = title
+		####################### Disease queried by ID ##########
+		query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
+		disease = ""
+		for g in query_disease:
+			disease = disease+ " " + g.disease
+		data["disease"] = disease
+		####################### tissue queried by ID ##########
+		query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
+		tissue = ""
+		for g in query_tissue:
+			tissue = tissue+ " " + g.Tissue
+		data["Tissue"] = tissue
+		DATAs.append(data)
+	return DATAs
 
 def getAllInfor(AccessionID):
-    try:
+	'''Query all the tables and combine all the information by AccessionID'''
+	try:
 		data = {}
 		query = session.query(Main).filter_by(ArrayExpress = AccessionID).one()
 		data["ArrayExpress"] = AccessionID
@@ -137,13 +172,37 @@ def getAllInfor(AccessionID):
 
 
 		return data
-    except:
-        return None
+	except:
+		return None
+
+def getStatistics():
+	'''Get statistical data from the tables'''
+	query_pubs = session.query(Publication).all()
+	statistics = {}
+	statistics["disease"] = {}
+	statistics["journal"] = {}
+	for query in  query_pubs:
+		journal = query.Journal
+		if not statistics["journal"].get(journal):
+			statistics["journal"][journal] = 1
+		else:
+			statistics["journal"][journal] = statistics["journal"][journal] + 1
+
+		AccessionID = query.ArrayExpress
+		query_diseases = session.query(Disease).filter_by(ArrayExpress = AccessionID).all()
+		for query_dis in query_diseases:
+			disease = query_dis.disease
+			if not statistics["disease"].get(disease):
+				statistics["disease"][disease] = 1
+			else:
+				statistics["disease"][disease] = statistics["disease"][disease] + 1
+	return statistics
 
 
 def getUserPassword(email):
-    try:
-        user = session.query(Accession).filter_by(email=email).one()
-        return user.password
-    except:
-        return None
+	'''Check the password by email'''
+	try:
+		user = session.query(Accession).filter_by(email=email).one()
+		return user.password
+	except:
+		return None
