@@ -202,7 +202,8 @@ class Accession(Base):
 	name = Column(String(50), nullable=False)
 	email = Column(String(50), nullable=False)
 	institution = Column(String(50), nullable=False)
-	expirationdate = Column(DATETIME, nullable=False)
+	password = Column(String(50), nullable=False)
+	#expirationdate = Column(DATETIME, nullable=False)
 	downloadedtimes = Column(Integer, nullable=False,default = 0)
 
 
@@ -211,14 +212,15 @@ class Accession(Base):
 		"""Return object data in easily serializeable format"""
 		return {
 			'randomcode': self.randomcode,
+			'password': self.password,
 			'name':self.name,
 			'email':self.email,
 			'institution':self.institution,
-			'expirationdate':self.expirationdate,
+			#'expirationdate':self.expirationdate,
 			'downloadedtimes':self.downloadedtimes,
 		}
 
-engine =  create_engine('mysql://root@localhost/metadb')
+engine =  create_engine('mysql://root:mysql@localhost/metaDB')
 
 
 Base.metadata.create_all(engine)

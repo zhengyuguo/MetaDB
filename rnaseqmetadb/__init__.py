@@ -14,7 +14,7 @@ import datetime
 app = Flask(__name__)
 
 
-engine =  create_engine('mysql://root@localhost/metadb')  #should change the password to the one you use in your local machine
+engine =  create_engine('mysql://root:mysql@localhost/metaDB')  #should change the password to the one you use in your local machine
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -77,17 +77,17 @@ def home():
 		html = html + "<h>" + ID+"</h>"
 		query_ID = session.query(Main).filter_by(ArrayExpress = ID).one()
 		data = [ x.Title, query_ID.PI, x.Journal, x.Year ]	
-		html = html +"<p>"+ x.Title+" "+query_ID.PI+" "+x.Journal+" " + str(x.Year) + "</p>"	
+		html = html +"<p>"+ x.Title+import datetime" "+query_ID.PI+" "+x.Journal+" " + str(x.Year) + "</p>"	
 		publications = publications.append(data)
 	'''
-	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs ) 
+	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 
 
 
 @app.route('/submission/',   methods=['GET', 'POST'] )
 def submission():
 	if request.method == 'GET':
-		return render_template('submission.html') 
+		return render_template('submission.html',login_session = login_session) 
 	else:
 		inquery = Inquery(ArrayExpress = request.form.get('AccessionID'),
 						PubMed = request.form.get('PubMedID'),
@@ -106,32 +106,89 @@ def submission():
 @app.route('/index/<AccessionID>/')
 def datasets(AccessionID):
 	dataRow = getAllInfor(AccessionID)
-	return render_template('datasets.html',dataRow = dataRow) # show complete info in datasets.html
-
-@app.route('/statistics/')
-def statistics():
-	return render_template('statistics.html')
+	return render_template('datasets.html',dataRow = dataRow,login_session = login_session) # show complete info in datasets.html
 
 @app.route('/contactus/')
 def contactus():
-	return render_template('contactus.html')
-@app.route('/login/')
+	return render_template('contactus.html',login_session = login_session)
+
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
-	return render_template('login.html')
-@app.route('/createaccount/')
+	if request.method == 'POST':
+		email = request.form['email']
+		password = request.form['password']
+		print email
+		UserPassword = getUserPassword(email)
+		if not UserPassword:
+			flash("Account: %s doesn't exist." % email)
+			return render_template('login.html',login_session = login_session)
+		if password == UserPassword:   #check the input email has been used or not
+			flash('Wrong email or password: %s' %password)
+			return render_template('login.html',login_session = login_session) 
+		login_session['email'] = email #record the login
+		login_session['login'] = True 
+		return redirect(url_for('home'))
+	else:
+		return render_template('login.html',login_session = login_session)
+
+@app.route('/createaccount/', methods=['GET', 'POST'])
 def createaccount():
-	return render_template('createaccount.html')
+	'''Do not verify the input data'''
+	if request.method == 'POST':
+		email = request.form['YourEmail']
+		password = request.form['pwd']
+		account = session.query(Accession).filter_by(email=email).all()
+		if len(account) != 0:   #check the input email has been used or not
+			flash('Email: %s has been used' % email)
+			return render_template('createaccount.html',login_session = login_session) 
+		if len(password) < 6:
+			flash('The length of password should contain at least 6 characters.')
+			return render_template('createaccount.html',login_session = login_session) 
+		if len(password) > 15:
+			flash('The length of password should contain at most 15 characters.')
+			return render_template('createaccount.html',login_session = login_session) 
+		'''
+		currentdatetime  = datetime.datetime.utcnow
+		fourday=datetime.timedelta(days=4)   
+   		expirationdate = currentdatetime +  fourday    
+		'''
+		name = request.form['firstname'] +" "+request.form['lastname']
+		newShop = Accession(name=name,
+							randomcode = "111",
+							email = email,
+							password = password,
+							institution = request.form['lastname'], 
+							downloadedtimes = 0)
+		session.add(newShop)
+		flash('New account %s has been successfully created' % email)
+		session.commit()
+		return redirect(url_for('home'))
+	else:
+		return render_template('createaccount.html',login_session = login_session)
+
+
 @app.route('/logout/')
 def logout():
-	return redirect('/index/')
+	email = login_session['email']
+	del login_session['email']
+	del login_session['login']
+	flash('Account %s has been logged out.' % email)
+	return redirect(url_for('home'))
+
+
 @app.route('/inquiry/')
 def inquiry():
-	return render_template('inquiry.html')
+	return render_template('inquiry.html',login_session = login_session)
+
+
 @app.route('/download/')
 def download():
-	return render_template('download.html')
+	return render_template('download.html',login_session = login_session)
 	
 
+@app.route('/statistics/')
+def statistics():
+	return render_template('statistics.html',login_session = login_session)
 
 # User Helper Functions
 def getAllInfor(AccessionID):
@@ -183,7 +240,14 @@ def getAllInfor(AccessionID):
         return None
 
 
+def getUserPassword(email):
+    try:
+        user = session.query(Accession).filter_by(email=email).one()
+        return user.password
+    except:
+        return None
 
 if __name__ == '__main__':
+	app.secret_key = 'super secret key'
 	app.debug = True
 	app.run()
