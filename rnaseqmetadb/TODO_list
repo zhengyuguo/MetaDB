@@ -1,12 +1,27 @@
 
 
-statistics.html
+encrypt password:  how to save password in a safe way?
+
+SQL injection: how to avoid?
+
+cross site attack: how to avoid?
 
 
-submission 没有限定
+inquiry.html:
+	This page is invisibal.
+	when manager visit this page, password is reqired to verify the user's identification.
+	Add status into the corresponding table.
 
-Keyword, Sample List
+download.html:
+	Downloading link should be provided in this page.
+	Verified user can download.
+
+statistc.html:
+	JSON
 
 
+Forms: 
+	restrictions
 
-Could you put some limitation on the 
+search by keyword:
+	Too many results.
