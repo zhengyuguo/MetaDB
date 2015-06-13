@@ -4,10 +4,10 @@
 {% endblock %}
 {% block content %}
 <div class="col-md-12">
-<form class="form-inline">
+<form class="form-inline" action="/search/">
   <div class="form-group">
     <label for="keyword">Key Word:</label>
-    <input type="text" class="form-control" id="keyword">
+    <input type="text" class="form-control" name="keyword">
   </div>
   <div class="form-group">
     <label for="genename">Gene Name:</label>
@@ -58,7 +58,7 @@
 <td>{{data["title"]}}</td>
 <td>{{data["gene"]}}</td>
 <td>{{data["disease"]}}</td>
-<td>{{data["tissue"]}}</td>
+<td>{{data["Tissue"]}}</td>
 </tr>
 {% endfor%} 
 
