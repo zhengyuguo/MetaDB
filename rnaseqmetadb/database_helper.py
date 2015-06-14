@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Base, Main, Gene, Genotype, Disease, Tissue, Publication, Publication_Author, Publication_Keyword, Inquery, Accession
+from database import Base, Main, Gene, Genotype, Disease, Tissue, Publication, Publication_Author, Publication_Keyword, Inquery, User
+from werkzeug.security import generate_password_hash, check_password_hash
+
 import json
 
 engine =  create_engine('mysql://root:mysql@localhost/metaDB')  #should change the password to the one you use in your local machine
@@ -12,25 +14,31 @@ session = DBSession()
 
 # User Helper Functions for Database
 def saveToInquery(ArrayExpress, PubMed, name, email, comments):
-	inquery = Inquery(ArrayExpress = ArrayExpress,
-						PubMed = ArrayExpress,
-						name = name, 
-						email = email, 
-						comments = comments )
+	'''saveToInquery: output:
+					1 means AccessionID is null;
+					2 means name is null;
+					3 means email is null
+					4 means other errors
+					5 means success	'''
+	if ArrayExpress is None or ArrayExpress is "":
+		return 1
+	if name is None or name is "":
+		return 2
+	if email is None or email is "":
+		return 3
+	try:
+		inquery = Inquery(ArrayExpress = ArrayExpress,
+							PubMed = ArrayExpress,
+							name = name, 
+							email = email, 
+							comments = comments )
 
-	session.add(inquery)
-	session.commit()
-
-
-def saveToAccession(name, email, password,institution):
-	newUser = Accession(name=name,
-							randomcode = "111",
-							email = email,
-							password = password,
-							institution = institution, 
-							downloadedtimes = 0)
-	session.add(newUser)
-	session.commit()
+		session.add(inquery)
+		session.commit()
+		return 5
+	except:
+		return 4
+	
 
 
 def getAllInquery():
@@ -187,7 +195,6 @@ def getStatistics():
 			statistics["journal"][journal] = 1
 		else:
 			statistics["journal"][journal] = statistics["journal"][journal] + 1
-
 		AccessionID = query.ArrayExpress
 		query_diseases = session.query(Disease).filter_by(ArrayExpress = AccessionID).all()
 		for query_dis in query_diseases:
@@ -198,11 +205,49 @@ def getStatistics():
 				statistics["disease"][disease] = statistics["disease"][disease] + 1
 	return statistics
 
-
-def getUserPassword(email):
-	'''Check the password by email'''
+   
+def createUser(name, email, password,institution):
+	'''Create user: -1 means email has been used; 
+					0 means password is too short; 
+					1 means password is too long;
+					2 means insititute is not provided
+					3 means name is not provided.
+					4 means other errors;
+					5 means successfully create user '''
+	account = session.query(User).filter_by(email=email).all()
+	if len(account) != 0:   #check the input email has been used or not
+		return -1
+	if len(password) < 6:
+		return 0 
+	if len(password) > 15:
+		return 1 
+	if institution is None:
+		return 2 
+	if name is None:
+		return 3 
 	try:
-		user = session.query(Accession).filter_by(email=email).one()
-		return user.password
+		pwhash =  generate_password_hash(password)
+		print password
+		newUser = User(name=name,
+								email = email,
+								pwhash = pwhash,
+								institution = institution, 
+								downloadedtimes = 0)
+		session.add(newUser)
+		session.commit()
+		return 5
 	except:
-		return None
+		return 4 
+
+
+def checkUserPassword(email,password):
+	'''Check the password by email: -1 means no user; 0 means wrong password; 1 means correct'''
+	try:
+		user = session.query(User).filter_by(email=email).one()
+		print check_password_hash(user.pwhash, password)
+		if check_password_hash(user.pwhash , password):
+			return 1;
+		else:
+			return 0
+	except:
+		return -1    

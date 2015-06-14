@@ -1,37 +1,58 @@
 
 
-encrypt password:  how to save password in a safe way?
+
 
 SQL injection: how to avoid?
 
 cross site attack: how to avoid?
 
 
+Database:
+	Rename accession to user;
+	Remove columns: password, randomcode,expirationdate;
+	add a column pwhash which means hash code of password.
+
+create account:
+	Some restrictions have been added in the backend. 
+	The user will be notified when the submitted items don't satisfy the restrictions. 
+	You don't need to care about these.
+
+
+Password:
+	I've finished the encrypting password and verifying password.
+
+Forms: 
+	I put some restrictions on the items posted from the front-end pages.
+	If the restrictions were not satisfied, the forms will be obandoned.
+	Meanwhile, the user will be notified.
+
+
 inquiry.html:
-	This page is invisible. Super code should be provided to get the right to manage.
-	when manager visit this page, password is reqired to verify the user's identification.
-	Add status into the corresponding table.
-	status:
-		unprocessed
-		unapproved
-		approved
+	I've modified your page to show all the inqueries submitted.
+	This page is invisible. Please add a form into this page to submit a super code which is used to verify the manager's identification.
+	I have realized some APIs for your front-end pages:
+	(1) get all the inqueries.
+	(2) use post method to change the status. 
+
 
 download.html:
 	Downloading link should be provided in this page.
-	Verified user can download.
+	Verified user can download the datasets.
+	Please discuss with Zhengyu about the downloading link.
+
+
 
 statistc.html:
-	JSON
-	no Geographic location
-	no research area
+	By exploiting the given API, you can get JSON file including statistic data.
+	I am not familiar with Javascript. It's hard for me to modify your code to exploit these data. 
+	Could you realize the relative front-end page to show the statistics?
 
 
-Forms: 
-	restrictions
 
 search by keyword:
 	Too many results.
-	How to exploit different search restrictions.
+	I am discussing with Zhengyu about how to exploit different search restrictions.
+	I will realize some APIs by which you can get the search result. 
 
 
 	
