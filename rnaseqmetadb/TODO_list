@@ -32,7 +32,8 @@ inquiry.html:
 	This page is invisible. Please add a form into this page to submit a super code which is used to verify the manager's identification.
 	I have realized some APIs for your front-end pages:
 	(1) get all the inqueries.
-	(2) use post method to change the status. 
+	I need to make sure what operation you want to use to change the status for each inquery.
+	I may realize a API by which you can use with post method to change the status. 
 
 
 download.html:
