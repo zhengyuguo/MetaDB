@@ -143,6 +143,7 @@ class Publication_Author(Base):
 	ArrayExpress = Column(String(20))
 	PubMed = Column(String(50))
 	Author = Column(String(50))
+	Order = Column(Integer)
 
 
 	@property
@@ -180,7 +181,8 @@ class Inquery(Base):
 	name = Column(String(50), nullable=False)
 	email = Column(String(50), nullable=False)
 	PubMed = Column(String(50))
-	comments = Column(TEXT, nullable=False)
+	comments = Column(TEXT, nullable=False, default = "")
+	status = Column(String(50), nullable=False,default="unprocessed")
 
 
 	@property
@@ -194,16 +196,14 @@ class Inquery(Base):
 			'comments':self.comments,
 		}
 
-class Accession(Base):
-	__tablename__ = 'accession'
+class User(Base):
+	__tablename__ = 'user'
 
 	id = Column(Integer, primary_key=True)
-	randomcode = Column(String(50), nullable=False)
 	name = Column(String(50), nullable=False)
 	email = Column(String(50), nullable=False)
 	institution = Column(String(50), nullable=False)
-	password = Column(String(50), nullable=False)
-	#expirationdate = Column(DATETIME, nullable=False)
+	pwhash = Column(String(200), nullable=False)
 	downloadedtimes = Column(Integer, nullable=False,default = 0)
 
 
@@ -211,12 +211,10 @@ class Accession(Base):
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
-			'randomcode': self.randomcode,
-			'password': self.password,
+			'pwhash': self.pwhash,
 			'name':self.name,
 			'email':self.email,
 			'institution':self.institution,
-			#'expirationdate':self.expirationdate,
 			'downloadedtimes':self.downloadedtimes,
 		}
 
