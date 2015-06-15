@@ -3,6 +3,7 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+
 <div role="tabpanel">
 <div class="col-sm-3 sidebar">
   <!-- Nav tabs -->
@@ -26,39 +27,20 @@
 
 
 <script type="text/javascript">
-    
       // Load the Visualization API and the piechart package.
       google.load('visualization', '1.0', {'packages':['corechart']});
-      
+	  google.setOnLoadCallback(drawChart);
       // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart);
-
-
       // Callback that creates and populates a data table, 
       // instantiates the pie chart, passes in the data and
       // draws it.
       function drawChart() {
 
       // Create the data table.
-      var data = new google.visualization.DataTable();
-      data.addColumn('string', 'Country');
-      data.addColumn('number', 'Publications');
-      data.addRows([
-        ['USA', 3],
-        ['Canada', 1],
-        ['Germany', 1],
-        ['UK', 1],
-        ['France', 2]
-      ]);
-	  
-	        var data_journal = new google.visualization.DataTable();
-      data_journal.addColumn('string', 'Journal');
-      data_journal.addColumn('number', 'Publications');
-      data_journal.addRows([
-        ['Nature', 3],
-        ['Molecular Cell', 1],
-        ['Other', 1]
-      ]);
+	  //getting data in json format using google gviz_api
+      var data = new google.visualization.DataTable({{statDisease | safe}});  
+	        var data_journal = new google.visualization.DataTable({{statJournal | safe}});
+
 
       // Set chart options
       var options = {'title':'Publications by Geographic Location',
@@ -81,6 +63,8 @@
       chart.draw(data, options);
 	  
     }
+	
+
     </script>
 
 {%endblock%}
