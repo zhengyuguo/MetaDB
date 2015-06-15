@@ -14,7 +14,7 @@ import datetime
 app = Flask(__name__)
 
 
-engine =  create_engine('mysql://root:mysql@localhost/metaDB')  #should change the password to the one you use in your local machine
+engine =  create_engine('mysql://root:yulab@localhost:3306/metaDB')  #should change the password to the one you use in your local machine
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)

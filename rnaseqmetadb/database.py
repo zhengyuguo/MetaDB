@@ -143,6 +143,7 @@ class Publication_Author(Base):
 	ArrayExpress = Column(String(20))
 	PubMed = Column(String(50))
 	Author = Column(String(50))
+	Order = Column(Integer)
 
 
 	@property
