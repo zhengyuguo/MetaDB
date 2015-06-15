@@ -22,15 +22,17 @@ Admin can approve or disapprove the inquiry. clicking submit button will toggle 
 </tr>
 </thead>
 <tbody>
+{% for data in dataRow%}
 <tr>
-<td>data["ID"]</td>
-<td>data["pubmedid]</td>
-<td>data["name"]</td>
-<td>data["email"]</td>
-<td>data["comment"]</td>
-<td>data["status"]</td>
+<td>{{data.ArrayExpress}}</td>
+<td>{{data.PubMed}}</td>
+<td>{{data.name}}</td>
+<td>{{data.email}}</td>
+<td>{{data.comments}}</td>
+<td>{{data.status}}</td>
 <td><div class="center-block"><input type="checkbox" id="dataid" ></div></td>
 </tr>
+{% endfor %}
 </tbody>
 </table>
 <div class="form-group pull-right">

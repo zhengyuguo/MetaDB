@@ -19,30 +19,30 @@
 			  <div class="form-group">
 			    <label for="PubMedID" class="col-sm-3 control-label">PubMed ID (optional):</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" id="PubMedID">
+			      <input type="text" class="form-control" name="PubMedID">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="YourName" class="col-sm-3 control-label">Your Name:</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" id="YourName">
+			      <input type="text" class="form-control" name="YourName">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="YourEmail" class="col-sm-3 control-label">Your Email:</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" id="YourEmail">
+			      <input type="text" class="form-control" name="YourEmail">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="Comments" class="col-sm-3 control-label">Comments (optional):</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" id="Comments" style="height:100px">
+			      <input type="text" class="form-control" name="Comments" style="height:100px">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-3 col-sm-5">
-			      <button type="text" type="submit" class="btn btn-primary" id="inquerySub">Submit</button>
+			      <button type="text" type="submit" class="btn btn-primary" name="inquerySub">Submit</button>
 			    </div>
 			  </div>
 			</form>
