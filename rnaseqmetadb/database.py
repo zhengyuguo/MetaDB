@@ -143,7 +143,7 @@ class Publication_Author(Base):
 	ArrayExpress = Column(String(20))
 	PubMed = Column(String(50))
 	Author = Column(String(50))
-	Order = Column(Integer)
+	AuthorOrder = Column(Integer)
 
 
 	@property
@@ -153,6 +153,7 @@ class Publication_Author(Base):
 			'ArrayExpress': self.ArrayExpress,
 			'PubMed':self.PubMed,
 			'Author':self.Author,
+			'AuthorOrder':self.AuthorOrder,
 		}
 
 class Publication_Keyword(Base):
@@ -218,7 +219,7 @@ class User(Base):
 			'downloadedtimes':self.downloadedtimes,
 		}
 
-engine =  create_engine('mysql://root:mysql@localhost/metaDB')
+engine =  create_engine('mysql://root:yulab@localhost/metaDB')
 
 
 Base.metadata.create_all(engine)
