@@ -1,6 +1,6 @@
 ArrayExpress.Accession	Tissuetype.cell.types	BTO.ID
 E-GEOD-61216	embryonic germ cell	BTO:0005319
-E-GEOD-61216	preimplantation embryos	NA
+E-GEOD-61216	preimplantation embryos	
 E-GEOD-60968	embryonic fibroblast	BTO:0004725
 E-GEOD-60968	SKBR3 cell	BTO:0002419
 E-GEOD-59215	thymocyte	BTO:0001372
@@ -17,7 +17,7 @@ E-GEOD-57396	hematopoietic stem cell	BTO:0000725
 E-GEOD-57147	hematopoietic stem cell	BTO:0000725
 E-GEOD-57147	hematopoietic stem cell, blast cell	BTO:0000125
 E-GEOD-57147	hematopoietic stem cell, blast cell, myeloid	BTO:0001441
-E-GEOD-57147	LSK bone marrow cells	NA
+E-GEOD-57147	LSK bone marrow cells	
 E-GEOD-56127	cerebellum	BTO:0000232
 E-GEOD-56018	Th17 cell	BTO:0005655
 E-GEOD-55377	retina	BTO:0001175
