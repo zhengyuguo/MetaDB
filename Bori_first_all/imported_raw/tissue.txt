@@ -1,0 +1,35 @@
+ArrayExpress.Accession	Tissuetype.cell.types	BTO.ID
+E-GEOD-61216	embryonic germ cell	BTO:0005319
+E-GEOD-61216	preimplantation embryos	
+E-GEOD-60968	embryonic fibroblast	BTO:0004725
+E-GEOD-60968	SKBR3 cell	BTO:0002419
+E-GEOD-59215	thymocyte	BTO:0001372
+E-GEOD-58996	heart	BTO:0000562
+E-GEOD-58973	pro-B-lymphocyte	BTO:0003104
+E-GEOD-58972	pro-B-lymphocyte	BTO:0003104
+E-GEOD-58971	pro-B-lymphocyte	BTO:0003104
+E-GEOD-58905	regulatory T-lymphocyte	BTO:0004520
+E-GEOD-58498	eye	BTO:0000439
+E-GEOD-57959	eye	BTO:0000439
+E-GEOD-57837	T-lymphocyte	BTO:0000782
+E-GEOD-57837	B-lymphocyte	BTO:0000776
+E-GEOD-57396	hematopoietic stem cell	BTO:0000725
+E-GEOD-57147	hematopoietic stem cell	BTO:0000725
+E-GEOD-57147	hematopoietic stem cell, blast cell	BTO:0000125
+E-GEOD-57147	hematopoietic stem cell, blast cell, myeloid	BTO:0001441
+E-GEOD-57147	LSK bone marrow cells	
+E-GEOD-56127	cerebellum	BTO:0000232
+E-GEOD-56018	Th17 cell	BTO:0005655
+E-GEOD-55377	retina	BTO:0001175
+E-GEOD-55376	retina	BTO:0001175
+E-GEOD-54631	embryonic fibroblast	BTO:0004725
+E-GEOD-54631	SK-BR-3 cell	BTO:0002419
+E-GEOD-54154	bone marrow-derived macrophage	BTO:0004732
+E-GEOD-51008	embryonic fibroblast	BTO:0004725
+E-GEOD-49949	lens	BTO:0000723
+E-GEOD-49555	Hepatocyte	BTO:0000575
+E-GEOD-49555	hematopoietic stem cell	BTO:0000725
+E-GEOD-47395	embryonic fibroblast	BTO:0004725
+E-GEOD-46664	Sertoli cell	BTO:0001238
+E-GEOD-46664	Leydig cells	BTO:0000755
+E-GEOD-43631	hepatocyte	BTO:0000575
