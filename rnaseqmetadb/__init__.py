@@ -8,6 +8,8 @@ import json
 from flask import make_response
 import requests
 import datetime
+import gviz_api
+
 
 app = Flask(__name__)
 
@@ -143,9 +145,24 @@ def download():
 
 @app.route('/statistics/')
 def statistics():
-	statistics = jsonify(getStatistics())
+	statistics =(getStatistics())
+	schemaDisease= [('Disease','string'), ('Publications', 'number')] #in list form
+	#data must be in list form
+	data= statistics["disease"].items()
+   # Loading it into gviz_api.DataTable
+	data_table = gviz_api.DataTable(schemaDisease)
+	data_table.LoadData(data)
+	jsonDiseaseData = data_table.ToJSon()
+	
+	schemaJournal= [('Journal','string'), ('Publications', 'number')] #in list form
+	#data must be in list form
+	data= statistics["journal"].items()
+   # Loading it into gviz_api.DataTable
+	data_table = gviz_api.DataTable(schemaJournal)
+	data_table.LoadData(data)
+	jsonJournalData = data_table.ToJSon()
 	#return statistics
-	return render_template('statistics.html',statistics = statistics,login_session = login_session)
+	return render_template('statistics.html',statDisease = jsonDiseaseData,statJournal = jsonJournalData,login_session = login_session)
 
 
 
