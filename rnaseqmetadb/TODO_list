@@ -8,9 +8,9 @@ cross site attack: how to avoid?
 
 
 Database:
-	Rename accession to user;
-	Remove columns: password, randomcode,expirationdate;
-	add a column pwhash which means hash code of password.
+	Renamed accession to user;
+	Removed columns: password, randomcode,expirationdate;
+	Added a column pwhash which means hash code of password.
 
 create account:
 	Some restrictions have been added in the backend. 
