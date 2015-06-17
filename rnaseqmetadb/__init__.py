@@ -19,6 +19,7 @@ app = Flask(__name__)
 def home():
 	keyword = request.args.get("keyword")
 	[gene_names, disease_names, tissue_names, DATAs] = getAllData()
+
 	if keyword:
 		AccessionIDS = getAccessionID(keyword)
 		DATAs = getInforByID(AccessionIDS)
@@ -37,7 +38,7 @@ def submission():
 		name = str(request.form.get('YourName'))
 		email = str(request.form.get('YourEmail'))
 		comments = str(request.form.get('Comments'))
-		status = saveToInquery(ArrayExpress, PubMed, name, email, comments)
+		status = saveToInquiry(ArrayExpress, PubMed, name, email, comments)
 		if status == 1:
 			flash('AccessionID can not be empty. ')
 		elif status == 2:
@@ -47,7 +48,7 @@ def submission():
 		elif status == 4:
 			flash('Sorry, some error happened. ')
 		else:
-			flash('You have submitted an inquery successfully. ')
+			flash('You have submitted an inquiry successfully. ')
 			return redirect(url_for('home'))
 		return redirect(url_for('submission'))
 
@@ -131,7 +132,7 @@ def logout():
 @app.route('/inquiry/', methods=['GET', 'POST'])
 def inquiry():
 	if request.method == 'GET':
-		dataRow = getAllInquery()
+		dataRow = getAllInquiry()
 		return render_template('inquiry.html', dataRow = dataRow, login_session = login_session)
 	else:
 		#to do
@@ -161,8 +162,24 @@ def statistics():
 	data_table = gviz_api.DataTable(schemaJournal)
 	data_table.LoadData(data)
 	jsonJournalData = data_table.ToJSon()
+
+	schemaGeo= [('GeoLoation','string'), ('Publications', 'number')] #in list form
+	#data must be in list form
+	data= statistics["GeoArea"].items()
+   # Loading it into gviz_api.DataTable
+	data_table = gviz_api.DataTable(schemaGeo)
+	data_table.LoadData(data)
+	jsonGeolData = data_table.ToJSon()
+	
+	schemaResearchArea= [('ResearchArea','string'), ('Publications', 'number')] #in list form
+	#data must be in list form
+	data= statistics["researchArea"].items()
+   # Loading it into gviz_api.DataTable
+	data_table = gviz_api.DataTable(schemaResearchArea)
+	data_table.LoadData(data)
+	jsonResearchArea = data_table.ToJSon()
 	#return statistics
-	return render_template('statistics.html',statDisease = jsonDiseaseData,statJournal = jsonJournalData,login_session = login_session)
+	return render_template('statistics.html', statResearchArea = jsonResearchArea,statGeo = jsonGeolData,statDisease = jsonDiseaseData,statJournal = jsonJournalData,login_session = login_session)
 
 
 

@@ -38,12 +38,13 @@
 
       // Create the data table.
 	  //getting data in json format using google gviz_api
-      var data = new google.visualization.DataTable({{statDisease | safe}});  
-	        var data_journal = new google.visualization.DataTable({{statJournal | safe}});
-
+      var data_disease = new google.visualization.DataTable({{statDisease | safe}});  
+	  var data_journal = new google.visualization.DataTable({{statJournal | safe}});
+		var data_researchArea = new google.visualization.DataTable({{statResearchArea | safe}});
+		var data_geo = new google.visualization.DataTable({{statGeo | safe}});
 
       // Set chart options
-      var options = {'title':'Publications by Geographic Location',
+      var options_disease = {'title':'Publications by Geographic Location',
                      'width':600,
                      'height':400};
 					 
@@ -51,16 +52,22 @@
       var options_journal = {'title':'Publications by Journal',
                      'width':600,
                      'height':400};
+	var options_researchArea = {'title':'Publications by Reasearch Area',
+                     'width':600,
+                     'height':400};
+	var options_geo = {'title':'Publications by Geographic Location',
+                     'width':600,
+                     'height':400};
 
       // Instantiate and draw our chart, passing in some options.
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-	  var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));//Publications by Geographic Location
+      chart.draw(data_geo, options_geo);
+	  var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));//Publications by Journal
       chart.draw(data_journal, options_journal);
-	  	  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
-      chart.draw(data_journal, options_journal);
-	    var chart = new google.visualization.PieChart(document.getElementById('chart_div4'));
-      chart.draw(data, options);
+	  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));//Publications by Research Area
+      chart.draw( data_researchArea, options_researchArea);
+	   var chart = new google.visualization.PieChart(document.getElementById('chart_div4'));//Publications by Disease
+      chart.draw(data_disease, options_disease);
 	  
     }
 	
