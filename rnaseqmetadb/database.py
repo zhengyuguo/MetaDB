@@ -143,7 +143,7 @@ class Publication_Author(Base):
 	ArrayExpress = Column(String(20))
 	PubMed = Column(String(50))
 	Author = Column(String(50))
-	Order = Column(Integer)
+	AuthorOrder = Column(Integer)
 
 
 	@property
@@ -153,6 +153,7 @@ class Publication_Author(Base):
 			'ArrayExpress': self.ArrayExpress,
 			'PubMed':self.PubMed,
 			'Author':self.Author,
+			'AuthorOrder':self.AuthorOrder,
 		}
 
 class Publication_Keyword(Base):
@@ -173,8 +174,8 @@ class Publication_Keyword(Base):
 			'keyword':self.keyword,
 		}
 
-class Inquery(Base):
-	__tablename__ = 'inquery'
+class Inquiry(Base):
+	__tablename__ = 'inquiry'
 
 	id = Column(Integer, primary_key=True)
 	ArrayExpress = Column(String(50), nullable=False)
@@ -194,6 +195,7 @@ class Inquery(Base):
 			'name':self.name,
 			'email':self.email,
 			'comments':self.comments,
+			'status':self.status,
 		}
 
 class User(Base):

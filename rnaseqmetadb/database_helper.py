@@ -1,20 +1,20 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database import Base, Main, Gene, Genotype, Disease, Tissue, Publication, Publication_Author, Publication_Keyword, Inquery, User
+from database import *
 from werkzeug.security import generate_password_hash, check_password_hash
-
+import sys
 import json
 
-engine =  create_engine('mysql://root:mysql@localhost/metaDB')  #should change the password to the one you use in your local machine
-Base.metadata.bind = engine
+reload(sys)
+sys.setdefaultencoding('cp1252')
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
 # User Helper Functions for Database
-def saveToInquery(ArrayExpress, PubMed, name, email, comments):
-	'''saveToInquery: output:
+def saveToInquiry(ArrayExpress, PubMed, name, email, comments):
+	'''saveToInquiry: output:
 					1 means AccessionID is null;
 					2 means name is null;
 					3 means email is null
@@ -27,13 +27,13 @@ def saveToInquery(ArrayExpress, PubMed, name, email, comments):
 	if email is None or email is "":
 		return 3
 	try:
-		inquery = Inquery(ArrayExpress = ArrayExpress,
+		inquiry = Inquiry(ArrayExpress = ArrayExpress,
 							PubMed = ArrayExpress,
 							name = name, 
 							email = email, 
 							comments = comments )
 
-		session.add(inquery)
+		session.add(inquiry)
 		session.commit()
 		return 5
 	except:
@@ -41,64 +41,63 @@ def saveToInquery(ArrayExpress, PubMed, name, email, comments):
 	
 
 
-def getAllInquery():
-	try:
-		query_main = session.query(Inquery).all()
-		return query_main
-	except:
-		return None
+def getAllInquiry():
+	query_main = session.query(Inquiry).all()
+	return query_main
+
 		
 
 def getAllData():
 	'''Query each table and combine the information together'''
-	try:
-		query_gene = session.query(Gene).all()
-		#return query_gene[0].Gene
-		gene_names = [x.Gene for x in query_gene]
-		gene_names = list(set(gene_names))
-		gene_names.sort()
+	#try:
+	query_gene = session.query(Gene).all()
+	#return query_gene[0].Gene
+	gene_names = [x.Gene for x in query_gene]
+	gene_names = list(set(gene_names))
+	gene_names.sort()
 
 
-		query_disease = session.query(Disease).all()
-		disease_names = [x.disease for x in query_disease]
-		disease_names = list(set(disease_names))
-		disease_names.sort()
+	query_disease = session.query(Disease).all()
+	disease_names = [x.disease for x in query_disease]
+	disease_names = list(set(disease_names))
+	disease_names.sort()
 
-		query_tissue = session.query(Tissue).all()
-		tissue_names = [x.Tissue for x in query_tissue]
-		tissue_names = list(set(tissue_names))
-		tissue_names.sort()
+	query_tissue = session.query(Tissue).all()
+	tissue_names = [x.Tissue for x in query_tissue]
+	tissue_names = list(set(tissue_names))
+	tissue_names.sort()
 
-		query_main = session.query(Main).all()
-		DATAs = []
-		for query in query_main:
-			data  = {}                           # a dictionary containing data will be transmitted
-			title = query.Title 
-			ID = query.ArrayExpress
-			data["ID"] = ID
-			data["title"] = title
-			####################### gene queried by ID ##########
-			query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
-			gene = ""
-			for g in query_gene:
-				gene = gene+ " " + g.Gene
-			data["gene"] = title
-			####################### Disease queried by ID ##########
-			query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
-			disease = ""
-			for g in query_disease:
-				disease = disease+ " " + g.disease
-			data["disease"] = disease
-			####################### tissue queried by ID ##########
-			query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
-			tissue = ""
-			for g in query_tissue:
-				tissue = tissue+ " " + g.Tissue
-			data["Tissue"] = tissue
-			DATAs.append(data)
-		return [gene_names, disease_names, tissue_names, DATAs]
-	except:
-		return [None, None, None, None]
+	query_main = session.query(Main).all()
+	DATAs = []
+	for query in query_main:
+		data  = {}                           # a dictionary containing data will be transmitted
+		title = query.Title 
+		ID = query.ArrayExpress
+		data["ID"] = ID
+		#title.encode("UTF-8").decode("Shift-JIS")
+		data["title"] = title
+		####################### gene queried by ID ##########
+		query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
+		gene = ""
+		for g in query_gene:
+			gene = gene+ " " + g.Gene
+		data["gene"] = title
+		####################### Disease queried by ID ##########
+		query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
+		disease = ""
+		for g in query_disease:
+			disease = disease+ " " + g.disease
+		data["disease"] = disease
+		####################### tissue queried by ID ##########
+		query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
+		tissue = ""
+		for g in query_tissue:
+			tissue = tissue+ " " + g.Tissue
+		data["Tissue"] = tissue
+		DATAs.append(data)
+	return [gene_names, disease_names, tissue_names, DATAs]
+	#except:
+		#return [None, None, None, None]
 
 def getInforByID(IDs):
 	'''Query the main table for AccessionIDs'''
@@ -112,7 +111,7 @@ def getInforByID(IDs):
 		title = query.Title 
 		ID = query.ArrayExpress
 		data["ID"] = ID
-		data["title"] = title
+		data["title"] = unicode(title.decode('utf-8'),'utf-8')  # or:
 		####################### gene queried by ID ##########
 		query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
 		gene = ""
@@ -189,6 +188,8 @@ def getStatistics():
 	statistics = {}
 	statistics["disease"] = {}
 	statistics["journal"] = {}
+	statistics["researchArea"] = {}
+	statistics["GeoArea"] = {}
 	for query in  query_pubs:
 		journal = query.Journal
 		if not statistics["journal"].get(journal):
@@ -203,6 +204,18 @@ def getStatistics():
 				statistics["disease"][disease] = 1
 			else:
 				statistics["disease"][disease] = statistics["disease"][disease] + 1
+	query_mains = session.query(Main).all()
+	for query in  query_mains:
+		researchArea = query.ResearchArea
+		if not statistics["researchArea"].get(researchArea):
+			statistics["researchArea"][researchArea] = 1
+		else:
+			statistics["researchArea"][researchArea] = statistics["researchArea"][researchArea] + 1
+		GeoArea = query.GeoArea
+		if not statistics["GeoArea"].get(GeoArea):
+			statistics["GeoArea"][GeoArea] = 1
+		else:
+			statistics["GeoArea"][GeoArea] = statistics["GeoArea"][GeoArea] + 1
 	return statistics
 
    
@@ -229,10 +242,10 @@ def createUser(name, email, password,institution):
 		pwhash =  generate_password_hash(password)
 		print password
 		newUser = User(name=name,
-								email = email,
-								pwhash = pwhash,
-								institution = institution, 
-								downloadedtimes = 0)
+					   email = email,
+					   pwhash = pwhash,
+					   institution = institution, 
+					   downloadedtimes = 0)
 		session.add(newUser)
 		session.commit()
 		return 5
