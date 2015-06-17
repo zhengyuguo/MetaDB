@@ -18,10 +18,15 @@ Admin can approve or disapprove the inquiry. clicking submit button will toggle 
 <th>Email</th>
 <th>Comment</th>
 <th>Status</th>
-<th>Toggle Approval</th>
+<th>Change Status</th>
 </tr>
 </thead>
 <tbody>
+<!-- Use this form to get data of change status.
+you can get the 'ArrayExpress' from the id attribute of select. Or you can pass any unique id to use as attribute of select.
+It will not work in Internet Explorer
+ -->
+ <form action="#" id="inquiryForm"></form>
 {% for data in dataRow%}
 <tr>
 <td>{{data.ArrayExpress}}</td>
@@ -30,13 +35,18 @@ Admin can approve or disapprove the inquiry. clicking submit button will toggle 
 <td>{{data.email}}</td>
 <td>{{data.comments}}</td>
 <td>{{data.status}}</td>
-<td><div class="center-block"><input type="checkbox" id="dataid" ></div></td>
+<td><select id={{data.ArrayExpress}} form="inquiryForm">
+<option>No Change</option>
+<option>Unprocessed</option>
+<option>Approved</option>
+<option>Disapproved</option>
+</select></td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
 <div class="form-group pull-right">
-<button type="submit" id="inquiryButton" class="btn btn-primary ">Submit Changes</button>
+<button type="submit" id="inquiryButton" class="btn btn-primary " form="inquiryForm">Submit Changes</button>
 </div>
 </div>
 </div>
