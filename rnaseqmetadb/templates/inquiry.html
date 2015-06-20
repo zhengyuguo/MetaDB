@@ -26,7 +26,7 @@ Admin can approve or disapprove the inquiry. clicking submit button will toggle 
 you can get the 'ArrayExpress' from the id attribute of select. Or you can pass any unique id to use as attribute of select.
 It will not work in Internet Explorer
  -->
- <form action="#" id="inquiryForm"></form>
+ <form action="" id="inquiryForm" method="POST">
 {% for data in dataRow%}
 <tr>
 <td>{{data.ArrayExpress}}</td>
@@ -35,13 +35,15 @@ It will not work in Internet Explorer
 <td>{{data.email}}</td>
 <td>{{data.comments}}</td>
 <td>{{data.status}}</td>
-<td><select id={{data.ArrayExpress}} form="inquiryForm">
+<td><select name={{data.id}} form="inquiryForm">
 <option>No Change</option>
 <option>Unprocessed</option>
 <option>Approved</option>
 <option>Disapproved</option>
+<option>Delete This Item</option>
 </select></td>
 </tr>
+</form>
 {% endfor %}
 </tbody>
 </table>
