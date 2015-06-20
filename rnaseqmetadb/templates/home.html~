@@ -3,15 +3,15 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-<div class="col-md-12">
-<form class="form-inline" action="/search/">
+<div class="col-md-12" style="min-height:60vh">
+<form class="form-inline" action="">
   <div class="form-group">
     <label for="keyword">Key Word:</label>
     <input type="text" class="form-control" name="keyword">
   </div>
   <div class="form-group">
     <label for="genename">Gene Name:</label>
-    <select class="form-control" id="genename">
+    <select class="form-control search" id="genename">
       <option>All</option>
 	{% for genename in gene_names %}
   	<option>{{genename}}</option>
@@ -20,16 +20,17 @@
   </div>
   <div class="form-group">
     <label for="diseasename">Disease Name:</label>
-     <select class="form-control" id="diseasename">
+     <select class="form-control search" id="diseasename">
       <option>All</option>
 	{% for diseasename in disease_names %}
   	<option>{{diseasename}}</option>
   	{% endfor %}
     </select>
   </div>
-    <div class="form-group">
+  <div class="space"></div>
+    <div class="form-group ">
     <label for="tissuetype">Tissue Type:</label>
-     <select class="form-control" id="tissuetype">
+     <select class="form-control search" id="tissuetype" >
       <option>All</option>
   	{% for tissuetype in tissue_names %}
   	<option>{{tissuetype}}</option>
@@ -38,7 +39,7 @@
   </div>
   <button type="submit" class="btn btn-primary">Search</button>
 </form>
-<div class="space"></div>
+<hr/>
 
 <div class="table-responsive">
 <table id="myTable" class="display">

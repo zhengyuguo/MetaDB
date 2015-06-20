@@ -38,8 +38,25 @@ def saveToInquiry(ArrayExpress, PubMed, name, email, comments):
 		return 5
 	except:
 		return 4
-	
 
+def changeInquiryStatus(ID, status):
+	try:
+		inquiry = session.query(Inquiry).filter_by(id = ID).one()
+		inquiry.status = status
+		session.add(inquiry)
+		session.commit()
+	except:
+		return 0
+	return 5
+	
+def deleteInquiry(ID):
+	try:
+		inquiry = session.query(Inquiry).filter_by(id = ID).one()
+		session.delete(inquiry)
+		session.commit()
+	except:
+		return 0
+	return 5
 
 def getAllInquiry():
 	query_main = session.query(Inquiry).all()
@@ -54,18 +71,27 @@ def getAllData():
 	#return query_gene[0].Gene
 	gene_names = [x.Gene for x in query_gene]
 	gene_names = list(set(gene_names))
-	gene_names.sort()
+	gene_names = sorted(gene_names, key=lambda x: x.lower())
+	#gene_names.sort()
+	if "" in gene_names:
+		gene_names.remove("")
 
 
 	query_disease = session.query(Disease).all()
 	disease_names = [x.disease for x in query_disease]
 	disease_names = list(set(disease_names))
-	disease_names.sort()
+	disease_names = sorted(disease_names, key=lambda x: x.lower())
+	#disease_names.sort()
+	if "" in disease_names:
+		disease_names.remove("")
 
 	query_tissue = session.query(Tissue).all()
 	tissue_names = [x.Tissue for x in query_tissue]
 	tissue_names = list(set(tissue_names))
-	tissue_names.sort()
+	tissue_names = sorted(tissue_names, key=lambda x: x.lower())
+	#tissue_names.sort()
+	if "" in tissue_names:
+		tissue_names.remove("")
 
 	query_main = session.query(Main).all()
 	DATAs = []
@@ -81,7 +107,7 @@ def getAllData():
 		gene = ""
 		for g in query_gene:
 			gene = gene+ " " + g.Gene
-		data["gene"] = title
+		data["gene"] = gene
 		####################### Disease queried by ID ##########
 		query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
 		disease = ""
@@ -99,37 +125,43 @@ def getAllData():
 	#except:
 		#return [None, None, None, None]
 
-def getInforByID(IDs):
+def getInforByID(IDs, constraints):
 	'''Query the main table for AccessionIDs'''
 	DATAs = []
 	for ID in IDs:
 		try:
-			query = session.query(Main).filter_by(ArrayExpress = ID).one()
+			query = session.query(Main).filter_by(ArrayExpress = ID).one()				
 		except:
 			continue
 		data  = {}                           # a dictionary containing data will be transmitted
 		title = query.Title 
 		ID = query.ArrayExpress
 		data["ID"] = ID
-		data["title"] = unicode(title.decode('utf-8'),'utf-8')  # or:
+		data["title"] = title  # or:
 		####################### gene queried by ID ##########
 		query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
 		gene = ""
 		for g in query_gene:
 			gene = gene+ " " + g.Gene
-		data["gene"] = title
+		data["gene"] = gene
+		if constraints["genename"] != "All" and constraints["genename"] not in data["gene"]:
+			continue
 		####################### Disease queried by ID ##########
 		query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
 		disease = ""
 		for g in query_disease:
 			disease = disease+ " " + g.disease
 		data["disease"] = disease
+		if constraints["diseasename"] != "All" and constraints["diseasename"] not in data["disease"]:
+			continue
 		####################### tissue queried by ID ##########
 		query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
 		tissue = ""
 		for g in query_tissue:
 			tissue = tissue+ " " + g.Tissue
 		data["Tissue"] = tissue
+		if constraints["tissuetype"] != "All" and constraints["tissuetype"] not in data["Tissue"]:
+			continue
 		DATAs.append(data)
 	return DATAs
 

@@ -190,6 +190,7 @@ class Inquiry(Base):
 	def serialize(self):
 		"""Return object data in easily serializeable format"""
 		return {
+			'id': self.id,
 			'ArrayExpress': self.ArrayExpress,
 			'PubMed':self.PubMed,
 			'name':self.name,
