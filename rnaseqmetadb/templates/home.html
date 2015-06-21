@@ -11,7 +11,7 @@
   </div>
   <div class="form-group">
     <label for="genename">Gene Name:</label>
-    <select class="form-control search" id="genename">
+    <select class="form-control search" name="genename">
       <option>All</option>
 	{% for genename in gene_names %}
   	<option>{{genename}}</option>
@@ -20,7 +20,7 @@
   </div>
   <div class="form-group">
     <label for="diseasename">Disease Name:</label>
-     <select class="form-control search" id="diseasename">
+     <select class="form-control search" name="diseasename">
       <option>All</option>
 	{% for diseasename in disease_names %}
   	<option>{{diseasename}}</option>
@@ -30,7 +30,7 @@
   <div class="space"></div>
     <div class="form-group ">
     <label for="tissuetype">Tissue Type:</label>
-     <select class="form-control search" id="tissuetype" >
+     <select class="form-control search" name="tissuetype" >
       <option>All</option>
   	{% for tissuetype in tissue_names %}
   	<option>{{tissuetype}}</option>

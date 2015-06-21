@@ -21,8 +21,13 @@ def home():
 	[gene_names, disease_names, tissue_names, DATAs] = getAllData()
 
 	if keyword:
+		constraints = {}
+		constraints["genename"] = request.args.get("genename")
+		constraints["diseasename"] = request.args.get("diseasename")		
+		constraints["tissuetype"] = request.args.get("tissuetype")
 		AccessionIDS = getAccessionID(keyword)
-		DATAs = getInforByID(AccessionIDS)
+		DATAs = getInforByID(AccessionIDS,constraints)
+	gene_names.sort
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 
 
@@ -131,12 +136,17 @@ def logout():
 
 @app.route('/inquiry/', methods=['GET', 'POST'])
 def inquiry():
-	if request.method == 'GET':
-		dataRow = getAllInquiry()
-		return render_template('inquiry.html', dataRow = dataRow, login_session = login_session)
-	else:
-		#to do
-		return render_template('inquiry.html', dataRow = dataRow, login_session = login_session)
+	dataRow = getAllInquiry()
+	if request.method == 'POST':
+		for data in dataRow:
+			ID = data.id
+			status = request.form[str(ID)]
+			if status == "Delete This Item":
+				deleteInquiry(ID)
+				dataRow.remove(data)
+			elif status != "No Change" and status != data.status:
+				changeInquiryStatus(ID, status)
+	return render_template('inquiry.html', dataRow = dataRow, login_session = login_session)
 
 
 @app.route('/download/')

@@ -13,7 +13,7 @@
 			  <div class="form-group">
 			    <label for="AccessionID" class="col-sm-3 control-label">Accession ID:</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" name="AccessionID" placeholder="GEO/ArrayExpress Accession ID">
+			      <input type="text" class="form-control" name="AccessionID" placeholder="GEO/ArrayExpress Accession ID" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -25,24 +25,24 @@
 			  <div class="form-group">
 			    <label for="YourName" class="col-sm-3 control-label">Your Name:</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" name="YourName">
+			      <input type="text" class="form-control" name="YourName" required>
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="YourEmail" class="col-sm-3 control-label">Your Email:</label>
+			    <label for="YourEmail" class="col-sm-3 control-label" required>Your Email:</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" name="YourEmail">
+			      <input type="email" class="form-control" name="YourEmail">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="Comments" class="col-sm-3 control-label">Comments (optional):</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control" name="Comments" style="height:100px">
+			      <textarea type="text" class="form-control" name="Comments" style="height:100px" placeholder="Make Your Comments"></textarea>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <div class="col-sm-offset-3 col-sm-5">
-			      <button type="text" type="submit" class="btn btn-primary" name="inquerySub">Submit</button>
+			      <button type="submit" class="btn btn-primary" name="inquerySub">Submit</button>
 			    </div>
 			  </div>
 			</form>
