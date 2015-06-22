@@ -25,7 +25,11 @@ Lab Website
 <table class="table">
 <tr>
 <td>ArrayExpress</td>
-<td>{{dataRow["ArrayExpress"]}}</td>
+<td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow["ArrayExpress"]}}">{{dataRow["ArrayExpress"]}}</a></td>
+</tr>
+<tr>
+<td>GEO Accession ID</td>
+<td><a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=<GEOAccession>'}}">GEO Accession ID will come here</a></td> <!-- modify the link-->
 </tr>
 <tr>
 <td>Title</td>
@@ -39,7 +43,7 @@ Lab Website
 <td>Gene</td>
 <td>
 {% for gene in dataRow["Gene"] %}
-	{{gene}} &nbsp&nbsp
+	<a target=_blank href="{{'http://www.informatics.jax.org/marker/'+gene}}">{{gene}} </a> <br/> <!-- replace gene with gene MGI in the link-->
 {% endfor %}
 </td>
 </tr>
@@ -50,6 +54,10 @@ Lab Website
 	{{Genotype}} &nbsp&nbsp
 {% endfor %}
 </td>
+</tr>
+<tr>
+<td>Tissue</td>
+<td><a target=_blank href="{{'http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=BTO&termId=<TissueID>'}}">Tissue ID will come here</a></td>
 </tr>
 <tr>
 <td>Keyword</td>
@@ -70,27 +78,28 @@ Lab Website
 </tr>
 <tr>
 <td>Sample List</td>
-<td>Sample List</td>
+<td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/<ArrayExpressAccession>/samples/'}}">Samples list will come here</a></td></td>
 </tr>
 <tr>
 <td>Publication</td>
 <td>
 {% for Publication in dataRow["Publication"] %}
-	{{Publication}} <br>
+	<a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/<PubMedID>'}}">{{Publication}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
 {% endfor %}
 </td>
 </tr>
 <tr>
-<td>PubMed</td>
-<td>
-{% for PubMed in dataRow["PubMed"] %}
-	{{PubMed}} &nbsp&nbsp
-{% endfor %}
-</td>
+<td>PI Name</td>
+<td><a target=_blank href="{{dataRow['Website']}}">{{dataRow['PI']}} </a> </td>
 </tr>
 <tr>
-<td>{{dataRow["Website"]}}</td>
-<td>{{dataRow['PI']}}</td>
+<td>Geographic Area</td>
+<td>Geographic Area</td>
+</tr>
+
+<tr>
+<td>Research Area</td>
+<td>Research Area</td>
 </tr>
 </table>
 </div>

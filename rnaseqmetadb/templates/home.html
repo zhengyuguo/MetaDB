@@ -55,7 +55,7 @@
 <tbody>
 {% for data in DATAs%} 
 <tr>
-<td>{{data["ID"]}}</td>
+<td><a href="{{url_for('home')+data["ID"]}}">{{data["ID"]}}</a></td>
 <td>{{data["title"]}}</td>
 <td>{{data["gene"]}}</td>
 <td>{{data["disease"]}}</td>
