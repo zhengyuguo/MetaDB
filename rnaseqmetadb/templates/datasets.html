@@ -29,7 +29,7 @@ Lab Website
 </tr>
 <tr>
 <td>GEO Accession ID</td>
-<td><a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=<GEOAccession>'}}">GEO Accession ID will come here</a></td> <!-- modify the link-->
+<td><a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc='+dataRow["GEO"]}}">{{dataRow["GEO"]}}</a></td> <!-- modify the link-->
 </tr>
 <tr>
 <td>Title</td>
@@ -42,8 +42,8 @@ Lab Website
 <tr>
 <td>Gene</td>
 <td>
-{% for gene in dataRow["Gene"] %}
-	<a target=_blank href="{{'http://www.informatics.jax.org/marker/'+gene}}">{{gene}} </a> <br/> <!-- replace gene with gene MGI in the link-->
+{% for i in range(dataRow["Gene"]|length) %}
+	<a target=_blank href="{{'http://www.informatics.jax.org/marker/'+dataRow["GeneMGI"][i]}}">{{dataRow["Gene"][i]}} </a> <br/> <!-- replace gene with gene MGI in the link-->
 {% endfor %}
 </td>
 </tr>
@@ -57,7 +57,11 @@ Lab Website
 </tr>
 <tr>
 <td>Tissue</td>
-<td><a target=_blank href="{{'http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=BTO&termId=<TissueID>'}}">Tissue ID will come here</a></td>
+<td>
+{% for TissueID in dataRow['TissueID'] %}
+	<a target=_blank href="{{'http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=BTO&termId='+TissueID}}">{{TissueID}}</a>
+{% endfor %}
+</td>
 </tr>
 <tr>
 <td>Keyword</td>
@@ -78,13 +82,13 @@ Lab Website
 </tr>
 <tr>
 <td>Sample List</td>
-<td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/<ArrayExpressAccession>/samples/'}}">Samples list will come here</a></td></td>
+<td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow["ArrayExpress"]+'/samples/'}}">Samples list</a></td></td>
 </tr>
 <tr>
 <td>Publication</td>
 <td>
-{% for Publication in dataRow["Publication"] %}
-	<a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/<PubMedID>'}}">{{Publication}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
+{%for i in range(dataRow["Publication"]|length)%}
+	<a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/'+dataRow['PubMed'][i]}}">{{dataRow["Publication"][i]}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
 {% endfor %}
 </td>
 </tr>
