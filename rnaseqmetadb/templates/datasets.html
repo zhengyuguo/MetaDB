@@ -51,7 +51,7 @@ Lab Website
 <td>Genotype</td>
 <td>
 {% for Genotype in dataRow["Genotype"] %}
-	{{Genotype}} &nbsp&nbsp
+	{{Genotype}} <br/>
 {% endfor %}
 </td>
 </tr>
@@ -67,7 +67,7 @@ Lab Website
 <td>Keyword</td>
 <td>
 {% for keyword in dataRow["keyword"] %}
-	{{keyword}} &nbsp&nbsp
+	{{keyword}} <br/>
 {% endfor %}
 
 </td>
@@ -76,7 +76,7 @@ Lab Website
 <td>Disease</td>
 <td>
 {% for disease in dataRow["disease"] %}
-	{{disease}} &nbsp&nbsp
+	{{disease}} <br/>
 {% endfor %}
 </td>
 </tr>
@@ -87,10 +87,26 @@ Lab Website
 <tr>
 <td>Publication</td>
 <td>
-{%for i in range(dataRow["Publication"]|length)%}
+{% for i in range(dataRow["Publication"]|length)%}
 	<a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/'+dataRow['PubMed'][i]}}">{{dataRow["Publication"][i]}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
 {% endfor %}
 </td>
+</tr>
+<tr>
+<td>Publication Journal</td>
+<td>Publication Journal</td>
+</tr>
+<tr>
+<td>Publication Authors</td>
+<td>Publication Authors</td>
+</tr>
+<tr>
+<td>Publication Abstract</td>
+<td>Publication Abstract</td>
+</tr>
+<tr>
+<td>Publication Year</td>
+<td>Publication Year</td>
 </tr>
 <tr>
 <td>PI Name</td>
