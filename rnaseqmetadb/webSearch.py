@@ -18,7 +18,7 @@ class PageClass:
 
 def getAccessionID(keyword):
 	## get xml file given keyword
-	url = "http://www.ebi.ac.uk/arrayexpress/xml/v2/experiments?query=" + keyword
+	url = "http://www.ebi.ac.uk/arrayexpress/xml/v2/experiments?query=exptype%3ARNA-seq+organism%3A\"Mus+musculus\"" + keyword
 	html = PageClass(url).read_page()
 
 	## get accession_id
