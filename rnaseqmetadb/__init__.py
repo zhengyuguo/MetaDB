@@ -19,14 +19,17 @@ app = Flask(__name__)
 def home():
 	keyword = request.args.get("keyword")
 	[gene_names, disease_names, tissue_names, DATAs] = getAllData()
-
-	if keyword:
+	if keyword is not None:
 		constraints = {}
 		constraints["genename"] = request.args.get("genename")
 		constraints["diseasename"] = request.args.get("diseasename")		
 		constraints["tissuetype"] = request.args.get("tissuetype")
-		AccessionIDS = getAccessionID(keyword)
-		DATAs = getInforByID(AccessionIDS,constraints)
+		if keyword:
+			AccessionIDS = getAccessionID(keyword)
+		else:
+			AccessionIDS = []
+		#DATAs = getInforByIDFilteredByConstraints(AccessionIDS,constraints)
+		DATAs = getInforCombined(AccessionIDS,constraints)
 	gene_names.sort
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 

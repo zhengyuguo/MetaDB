@@ -126,45 +126,92 @@ def getAllData():
 	#except:
 		#return [None, None, None, None]
 
-def getInforByID(IDs, constraints):
-	'''Query the main table for AccessionIDs'''
+
+
+
+def extractInfor(queries, constraints, filter_f):
+	'''Given queries, extract information.
+		queries are all the queires to be extracted information from;
+		constraints is the constriants filled on home.html.
+		filter_f is a flag. filter_f == True means the results will be filtered using the constraints;
+												filter_f == False means the results wil not be filtered;
+	'''
+	
 	DATAs = []
+	try:		
+		for query in queries:
+			data  = {}                           # a dictionary containing data will be transmitted
+			title = query.Title 
+			ID = query.ArrayExpress
+			data["ID"] = ID
+			data["title"] = title  # or:
+			####################### gene queried by ID ##########
+			query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
+			gene = ""
+			for g in query_gene:
+				gene = gene+ " " + g.Gene
+			data["gene"] = gene
+			if filter_f is True and constraints["genename"] != "All" and constraints["genename"] not in data["gene"]:
+				continue
+			####################### Disease queried by ID ##########
+			query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
+			disease = ""
+			for g in query_disease:
+				disease = disease+ " " + g.disease
+			data["disease"] = disease
+			if filter_f is True and constraints["diseasename"] != "All" and constraints["diseasename"] not in data["disease"]:
+				continue
+			####################### tissue queried by ID ##########
+			query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
+			tissue = ""
+			for g in query_tissue:
+				tissue = tissue+ " " + g.Tissue
+			data["Tissue"] = tissue
+			if filter_f is True and constraints["tissuetype"] != "All" and constraints["tissuetype"] not in data["Tissue"]:
+				continue
+			DATAs.append(data)
+		return DATAs
+	except:
+		return []
+
+def getInforCombined(IDs, constraints):
+	queries = []
+	if constraints["genename"] != "All":
+		print IDs
+		print [ query.ArrayExpress for query in session.query(Gene).filter_by(Gene = constraints["genename"]).all()]
+		IDs = IDs + [ query.ArrayExpress for query in session.query(Gene).filter_by(Gene = constraints["genename"]).all()]
+		print IDs
+	if constraints["diseasename"] != "All":
+		IDs = IDs + [ query.ArrayExpress for query in session.query(Disease).filter_by(disease = constraints["diseasename"]).all()]
+	if constraints["tissuetype"] != "All":
+		IDs = IDs + [ query.ArrayExpress for query in session.query(Tissue).filter_by(Tissue = constraints["tissuetype"]).all()]
+	#IDs = list(set(IDs))
 	for ID in IDs:
 		try:
 			query = session.query(Main).filter_by(ArrayExpress = ID).one()				
 		except:
 			continue
-		data  = {}                           # a dictionary containing data will be transmitted
-		title = query.Title 
-		ID = query.ArrayExpress
-		data["ID"] = ID
-		data["title"] = title  # or:
-		####################### gene queried by ID ##########
-		query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
-		gene = ""
-		for g in query_gene:
-			gene = gene+ " " + g.Gene
-		data["gene"] = gene
-		if constraints["genename"] != "All" and constraints["genename"] not in data["gene"]:
-			continue
-		####################### Disease queried by ID ##########
-		query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
-		disease = ""
-		for g in query_disease:
-			disease = disease+ " " + g.disease
-		data["disease"] = disease
-		if constraints["diseasename"] != "All" and constraints["diseasename"] not in data["disease"]:
-			continue
-		####################### tissue queried by ID ##########
-		query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
-		tissue = ""
-		for g in query_tissue:
-			tissue = tissue+ " " + g.Tissue
-		data["Tissue"] = tissue
-		if constraints["tissuetype"] != "All" and constraints["tissuetype"] not in data["Tissue"]:
-			continue
-		DATAs.append(data)
-	return DATAs
+		queries.append(query)
+	print len(queries)	
+	return extractInfor(queries, constraints, False)
+	
+
+def getInforByIDFilteredByConstraints(IDs, constraints):
+	'''Query the main table for AccessionIDs'''
+	queries = []
+	print IDs
+	if IDs is None:
+		queries = session.query(Main).all()	
+	else:
+		for ID in IDs:
+			try:
+				query = session.query(Main).filter_by(ArrayExpress = ID).one()				
+			except:
+				continue
+			queries.append(query)	
+	return extractInfor(queries, constraints, True) 
+
+
 
 def getAllInfor(AccessionID):
 	'''Query all the tables and combine all the information by AccessionID'''
