@@ -1,3 +1,4 @@
+# vim: set noexpandtab tabstop=2: 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import *
@@ -202,8 +203,13 @@ def getAllInfor(AccessionID):
 		query = session.query(Publication).filter_by(ArrayExpress = AccessionID).all()
 		data['PubMed'] = [ x.PubMed for x in query ] 
 		data['Publication'] =  [ x.Title for x in query ] 
+		data['Abstract'] =  [ x.Abstract for x in query ] 
+		data['Journal'] =  [ x.Journal for x in query ] 
+		data['Year'] =  [ x.Year for x in query ] 
 
-		query = session.query(Publication_Author).filter_by(ArrayExpress = AccessionID).all()
+
+
+		query = session.query(Publication_Author).filter_by(ArrayExpress = AccessionID).order_by(Publication_Author.AuthorOrder).all()
 		data['Author'] = [ x.Author for x in query ] 
 		
 		query = session.query(Publication_Keyword).filter_by(ArrayExpress = AccessionID).all()
