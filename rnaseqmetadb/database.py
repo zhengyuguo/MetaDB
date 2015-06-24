@@ -221,7 +221,7 @@ class User(Base):
 			'downloadedtimes':self.downloadedtimes,
 		}
 
-engine =  create_engine('mysql://root:mysql@localhost/metaDB')
+engine =  create_engine('mysql://root:yulab@localhost/metaDB')
 
 
 Base.metadata.create_all(engine)
