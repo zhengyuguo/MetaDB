@@ -183,22 +183,18 @@ def getAllInfor(AccessionID):
 		data['ResearchArea'] = query.ResearchArea
 
 		query = session.query(Gene).filter_by(ArrayExpress = AccessionID).all()
-		print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-		
 		data['Gene'] = [ x.Gene for x in query ]
-		print len(query)
 		data['GeneMGI'] = [ x.GeneMGI for x in query ]
 
 		query = session.query(Genotype).filter_by(ArrayExpress = AccessionID).all()
 		data['Genotype'] =  [ x.Genotype for x in query ] 
 
-		query = session.query(Disease).filter_by(ArrayExpress = AccessionID).all()
+		query = session.query(Disease).filter_by(ArrayExpress = AccessionID)
 		data['disease'] = [ x.disease for x in query ] 
 		data['diseaseMesh'] =  [ x.diseaseMesh for x in query ]
 
 		query = session.query(Tissue).filter_by(ArrayExpress = AccessionID).all()
-		data['Tissue'] = [ x.Tissue for x in query ] 
-		data['TissueID'] = [ x.TissueID for x in query ] 
+		data['Tissue'] = query
 
 		query = session.query(Publication).filter_by(ArrayExpress = AccessionID).all()
 		data['PubMed'] = [ x.PubMed for x in query ] 
@@ -207,14 +203,11 @@ def getAllInfor(AccessionID):
 		data['Journal'] =  [ x.Journal for x in query ] 
 		data['Year'] =  [ x.Year for x in query ] 
 
-
-
 		query = session.query(Publication_Author).filter_by(ArrayExpress = AccessionID).order_by(Publication_Author.AuthorOrder).all()
 		data['Author'] = [ x.Author for x in query ] 
 		
 		query = session.query(Publication_Keyword).filter_by(ArrayExpress = AccessionID).all()
 		data['keyword'] = [ x.keyword for x in query ] 
-
 
 		return data
 	except:

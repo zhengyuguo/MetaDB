@@ -58,8 +58,8 @@ Lab Website
       <tr>
         <td>Tissue</td>
         <td>
-          {% for TissueID in dataRow['TissueID'] %}
-          <a target=_blank href="{{'http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=BTO&termId='+TissueID}}">{{TissueID}}</a>
+          {% for row in dataRow['Tissue'] %}
+          <a target=_blank href="{{'http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=BTO&termId='+row.TissueID}}">{{row.Tissue}}</a>
           {% endfor %}
         </td>
       </tr>
@@ -70,16 +70,18 @@ Lab Website
         </td>
       </tr>
       <tr>
+        {% if dataRow["disease"]|length !=1 and dataRow["disease"] != "" %}
         <td>Disease</td>
         <td>
           {% for disease in dataRow["disease"] %}
           {{disease}} <br/>
           {% endfor %}
         </td>
+        {% endif %}
       </tr>
       <tr>
         <td>Sample List</td>
-        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow["ArrayExpress"]+'/samples/'}}">Samples list</a></td></td>
+        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow["ArrayExpress"]+'/samples/'}}">Check Sample List in ArrayExpress</a></td></td>
     </tr>
     <tr>
       <td>Publication</td>
