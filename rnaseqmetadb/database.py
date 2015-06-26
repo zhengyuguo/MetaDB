@@ -1,7 +1,7 @@
 import os
 import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.dialects.mysql import TEXT,DATETIME
+from sqlalchemy.dialects.mysql import TEXT,DATETIME, BOOLEAN
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -208,6 +208,7 @@ class User(Base):
 	institution = Column(String(50), nullable=False)
 	pwhash = Column(String(200), nullable=False)
 	downloadedtimes = Column(Integer, nullable=False,default = 0)
+	ismanager = Column(BOOLEAN,nullable=False,default = False )
 
 
 	@property
@@ -219,6 +220,7 @@ class User(Base):
 			'email':self.email,
 			'institution':self.institution,
 			'downloadedtimes':self.downloadedtimes,
+			'ismanager':self.ismanager,
 		}
 
 engine =  create_engine('mysql://root:mysql@localhost/metaDB')

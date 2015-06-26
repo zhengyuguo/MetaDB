@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from flask import session as login_session
+from flask.ext.mail import Message
+from flask.ext.mail import Mail
+
 
 from webSearch import *
 from database_helper import *
@@ -10,9 +13,20 @@ import requests
 import datetime
 import gviz_api
 
-
 app = Flask(__name__)
 
+from email_helper import *
+
+
+@app.route('/test/')
+def send_email_test():
+'''Used for testing email.'''
+	class user:
+		name = "Wei"
+		email = "qiaowei8993@gmail.com"
+	newUser = user()
+	send_notification_email(newUser)
+	return "Sent"
 
 @app.route('/')
 @app.route('/index/')
@@ -91,6 +105,7 @@ def login():
 		login_session['login'] = True 
 		user = session.query(User).filter_by(email=email).one()
 		login_session['user'] = user.name
+		login_session['ismanager'] = user.ismanager
 		return redirect(url_for('home'))
 	else:
 		return render_template('login.html',login_session = login_session)
@@ -133,6 +148,7 @@ def logout():
 	del login_session['email']
 	del login_session['login']
 	del login_session['user']
+	del login_session['ismanager']
 	flash('Account %s has been logged out.' % email)
 	return redirect(url_for('home'))
 

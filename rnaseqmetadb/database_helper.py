@@ -2,6 +2,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import *
+from email_helper import *
 from werkzeug.security import generate_password_hash, check_password_hash
 import sys
 import json
@@ -326,6 +327,8 @@ def createUser(name, email, password,institution):
 					   downloadedtimes = 0)
 		session.add(newUser)
 		session.commit()
+		#send_email_test()
+		send_notification_email(newUser)
 		return 5
 	except:
 		return 4 
