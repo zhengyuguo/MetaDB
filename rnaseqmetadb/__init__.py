@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from flask import session as login_session
+from flask.ext.mail import Message
+from flask.ext.mail import Mail
+
 
 from webSearch import *
 from database_helper import *
@@ -10,8 +13,9 @@ import requests
 import datetime
 import gviz_api
 
-
 app = Flask(__name__)
+
+from email_helper import *
 
 
 @app.route('/')
@@ -19,14 +23,17 @@ app = Flask(__name__)
 def home():
 	keyword = request.args.get("keyword")
 	[gene_names, disease_names, tissue_names, DATAs] = getAllData()
-
-	if keyword:
+	if keyword is not None:
 		constraints = {}
 		constraints["genename"] = request.args.get("genename")
 		constraints["diseasename"] = request.args.get("diseasename")		
 		constraints["tissuetype"] = request.args.get("tissuetype")
-		AccessionIDS = getAccessionID(keyword)
-		DATAs = getInforByID(AccessionIDS,constraints)
+		if keyword:
+			AccessionIDS = getAccessionID(keyword)
+		else:
+			AccessionIDS = []
+		#DATAs = getInforByIDFilteredByConstraints(AccessionIDS,constraints)
+		DATAs = getInforCombined(AccessionIDS,constraints)
 	gene_names.sort
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 
@@ -78,6 +85,10 @@ def login():
 		email = request.form['email']
 		password = request.form['password']
 		status = checkUserPassword(email,password)
+		if status == 2:
+			flash("Account: %s has not been verified. A verification email has been sent to you." % email)
+			send_verification_email(email)
+			return render_template('login.html',login_session = login_session)
 		if status == -1:
 			flash("Account: %s doesn't exist." % email)
 			return render_template('login.html',login_session = login_session)
@@ -88,6 +99,7 @@ def login():
 		login_session['login'] = True 
 		user = session.query(User).filter_by(email=email).one()
 		login_session['user'] = user.name
+		login_session['ismanager'] = user.ismanager
 		return redirect(url_for('home'))
 	else:
 		return render_template('login.html',login_session = login_session)
@@ -130,9 +142,24 @@ def logout():
 	del login_session['email']
 	del login_session['login']
 	del login_session['user']
+	del login_session['ismanager']
 	flash('Account %s has been logged out.' % email)
 	return redirect(url_for('home'))
 
+
+@app.route('/verify/')
+def verifyemail():
+	email = request.args.get("email")
+	randomcode = request.args.get("randomcode")
+	status = verifyUserEmail(email,randomcode)
+	if status is 1 or status is 2:
+		flash('Account %s has been verified. Please login.' % email)
+		return redirect(url_for('login'))
+	if status is 0:
+		flash('Account %s has not been verified.' % email)
+		return redirect(url_for('login'))
+	flash("Account %s doesn't exist." % email)
+	return redirect(url_for('createaccount'))
 
 @app.route('/inquiry/', methods=['GET', 'POST'])
 def inquiry():

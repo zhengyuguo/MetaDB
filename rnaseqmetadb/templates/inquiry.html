@@ -9,6 +9,11 @@ Admin can approve or disapprove the inquiry. clicking submit button will toggle 
  -->
 <div class="col-md-12" style="min-height:60vh"">
 <div class="table-responsive">
+{% if login_session.get('login') is none%}
+  <p>You must login to manage inquiries.</p>
+{% elif not login_session.get('ismanager')%}
+  <p>You are not a manager.</p>
+{% else %}
 <table id="inquiryTable" class="table">
 <thead>
 <tr>
@@ -50,6 +55,7 @@ It will not work in Internet Explorer
 <div class="form-group pull-right">
 <button type="submit" id="inquiryButton" class="btn btn-primary " form="inquiryForm">Submit Changes</button>
 </div>
+{% endif %}
 </div>
 </div>
 {% endblock%}

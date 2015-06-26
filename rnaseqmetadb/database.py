@@ -1,7 +1,7 @@
 import os
 import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.dialects.mysql import TEXT,DATETIME
+from sqlalchemy.dialects.mysql import TEXT,DATETIME, BOOLEAN
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -208,7 +208,9 @@ class User(Base):
 	institution = Column(String(50), nullable=False)
 	pwhash = Column(String(200), nullable=False)
 	downloadedtimes = Column(Integer, nullable=False,default = 0)
-
+	randomcode = Column(String(50), nullable=False)
+	ismanager = Column(BOOLEAN,nullable=False,default = False )
+	verified = Column(BOOLEAN,nullable=False,default = False )
 
 	@property
 	def serialize(self):
@@ -219,6 +221,9 @@ class User(Base):
 			'email':self.email,
 			'institution':self.institution,
 			'downloadedtimes':self.downloadedtimes,
+			'randomcode':self.randomcode,
+			'ismanager':self.ismanager,
+			'verified':self.verified,
 		}
 
 engine =  create_engine('mysql://root:mysql@localhost/metaDB')
