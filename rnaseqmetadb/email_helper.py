@@ -25,7 +25,7 @@ def send_notification_email(newUser):
 	send_email("[RNASeqMetaDB] Hi, %s, welcom you!" % newUser.name,
  				ADMINS[0],
  				[newUser.email],
-				render_template("email.html"))
+				render_template("email.html",newUser = newUser))
 
 def send_email_test():
 	msg = Message(

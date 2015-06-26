@@ -18,16 +18,6 @@ app = Flask(__name__)
 from email_helper import *
 
 
-@app.route('/test/')
-def send_email_test():
-'''Used for testing email.'''
-	class user:
-		name = "Wei"
-		email = "qiaowei8993@gmail.com"
-	newUser = user()
-	send_notification_email(newUser)
-	return "Sent"
-
 @app.route('/')
 @app.route('/index/')
 def home():
@@ -95,6 +85,10 @@ def login():
 		email = request.form['email']
 		password = request.form['password']
 		status = checkUserPassword(email,password)
+		if status == 2:
+			flash("Account: %s has not been verified. A verification email has been sent to you." % email)
+			send_verification_email(email)
+			return render_template('login.html',login_session = login_session)
 		if status == -1:
 			flash("Account: %s doesn't exist." % email)
 			return render_template('login.html',login_session = login_session)
@@ -152,6 +146,20 @@ def logout():
 	flash('Account %s has been logged out.' % email)
 	return redirect(url_for('home'))
 
+
+@app.route('/verify/')
+def verifyemail():
+	email = request.args.get("email")
+	randomcode = request.args.get("randomcode")
+	status = verifyUserEmail(email,randomcode)
+	if status is 1 or status is 2:
+		flash('Account %s has been verified. Please login.' % email)
+		return redirect(url_for('login'))
+	if status is 0:
+		flash('Account %s has not been verified.' % email)
+		return redirect(url_for('login'))
+	flash("Account %s doesn't exist." % email)
+	return redirect(url_for('createaccount'))
 
 @app.route('/inquiry/', methods=['GET', 'POST'])
 def inquiry():

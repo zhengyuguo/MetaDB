@@ -1,9 +1,10 @@
 <html> 
   <head></head> 
   <body> 
-    <p>Hi!<br> 
-       How are you?<br> 
-       Here is the <a href="http://www.python.org">link</a> you wanted. 
+    <h1>Hi!, {{newUser.name}}</h1>
+       <p>Please visit the following link to verify your email: <br>
+			<a href="{{'http://localhost:5000/verify/?email='+newUser.email+'&randomcode='+newUser.randomcode}}">
+					localhost:5000/verify/?email={{newUser.email}}&randomcode={{newUser.randomcode}}</a>
     </p> 
   </body> 
 </html> 
