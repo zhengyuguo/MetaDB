@@ -2,7 +2,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import *
+from email_helper import *
 from werkzeug.security import generate_password_hash, check_password_hash
+import random, string
 import sys
 import json
 
@@ -316,29 +318,54 @@ def createUser(name, email, password,institution):
 		return 2 
 	if name is None:
 		return 3 
-	try:
-		pwhash =  generate_password_hash(password)
-		print password
-		newUser = User(name=name,
+
+	pwhash =  generate_password_hash(password)
+	randomcode = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+	newUser = User(name=name,
 					   email = email,
 					   pwhash = pwhash,
 					   institution = institution, 
+						 randomcode = randomcode,
 					   downloadedtimes = 0)
-		session.add(newUser)
-		session.commit()
-		return 5
-	except:
-		return 4 
+	session.add(newUser)
+	session.commit()
+	#send_email_test()
+	send_notification_email(newUser)
+	return 5
 
+def send_verification_email(email):
+		user = session.query(User).filter_by(email=email).one()
+		send_notification_email(user)
 
 def checkUserPassword(email,password):
-	'''Check the password by email: -1 means no user; 0 means wrong password; 1 means correct'''
+	'''Check the password by email: -1 means no user; 0 means wrong password; 1 means correct; 
+	2 means account has not been verfied.'''
 	try:
 		user = session.query(User).filter_by(email=email).one()
 		print check_password_hash(user.pwhash, password)
 		if check_password_hash(user.pwhash , password):
+			if not user.verified:
+				return 2			
+			return 1
+		return 0
+	except:
+		return -1    
+
+
+def verifyUserEmail(email,randomcode):
+	'''verify the user email by randomcode. 
+		-1 means no such a user. 0 means fail verification; 1 means success. 2 means verified before.
+		'''
+	try:
+		user = session.query(User).filter_by(email=email).one()
+		if user.verified:
+			return 2
+		if user.randomcode == randomcode:
+			user.verified = True
+			session.add(user)
+			session.commit()
 			return 1;
 		else:
 			return 0
 	except:
-		return -1    
+		return -1 
