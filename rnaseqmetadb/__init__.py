@@ -1,8 +1,6 @@
+# vim: set noexpandtab tabstop=2:
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from flask import session as login_session
-from flask.ext.mail import Message
-from flask.ext.mail import Mail
-
 
 from webSearch import *
 from database_helper import *
@@ -15,30 +13,30 @@ import gviz_api
 
 app = Flask(__name__)
 
+
 from email_helper import *
 
-
 @app.route('/')
-@app.route('/index/')
 def home():
+	(gene_names, disease_names, tissue_names, DATAs) = getAllData()
+	constraints = {}
+
+	genename = request.args.get("genename")
+	if genename and genename != "":
+		constraints["Gene"] = genename
+	diseasename = request.args.get("diseasename")
+	if diseasename and diseasename != "":
+		constraints["Disease"] = diseasename
+	tissuetype = request.args.get("tissuetype")
+	if tissuetype and tissuetype != "":
+		constraints["Tissue"] = tissuetype
+
+	acc = getAccByConstraints(constraints)
 	keyword = request.args.get("keyword")
-	[gene_names, disease_names, tissue_names, DATAs] = getAllData()
-	if keyword is not None:
-		constraints = {}
-		constraints["genename"] = request.args.get("genename")
-		constraints["diseasename"] = request.args.get("diseasename")		
-		constraints["tissuetype"] = request.args.get("tissuetype")
-		if keyword:
-			AccessionIDS = getAccessionID(keyword)
-		else:
-			AccessionIDS = []
-		#DATAs = getInforByIDFilteredByConstraints(AccessionIDS,constraints)
-		DATAs = getInforCombined(AccessionIDS,constraints)
-	gene_names.sort
+	if keyword:
+		 acc.intersection_update(set(getAccessionID(keyword)))
+	DATAs = [entry for entry in DATAs if entry['ID'] in acc]
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
-
-
-
 
 @app.route('/submission/',   methods=['GET', 'POST'] )
 def submission():
@@ -67,7 +65,7 @@ def submission():
 
 
 ##  show the information of the dataset by accessionID
-@app.route('/index/<AccessionID>/')
+@app.route('/<AccessionID>/')
 def datasets(AccessionID):
 	dataRow = getAllInfor(AccessionID)
 	if not dataRow:
@@ -179,7 +177,7 @@ def inquiry():
 @app.route('/download/')
 def download():
 	return render_template('download.html',login_session = login_session)
-	
+
 
 @app.route('/statistics/')
 def statistics():
@@ -187,15 +185,15 @@ def statistics():
 	schemaDisease= [('Disease','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
 	data= statistics["disease"].items()
-   # Loading it into gviz_api.DataTable
+	 # Loading it into gviz_api.DataTable
 	data_table = gviz_api.DataTable(schemaDisease)
 	data_table.LoadData(data)
 	jsonDiseaseData = data_table.ToJSon()
-	
+
 	schemaJournal= [('Journal','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
 	data= statistics["journal"].items()
-   # Loading it into gviz_api.DataTable
+	 # Loading it into gviz_api.DataTable
 	data_table = gviz_api.DataTable(schemaJournal)
 	data_table.LoadData(data)
 	jsonJournalData = data_table.ToJSon()
@@ -203,23 +201,20 @@ def statistics():
 	schemaGeo= [('GeoLoation','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
 	data= statistics["GeoArea"].items()
-   # Loading it into gviz_api.DataTable
+	 # Loading it into gviz_api.DataTable
 	data_table = gviz_api.DataTable(schemaGeo)
 	data_table.LoadData(data)
 	jsonGeolData = data_table.ToJSon()
-	
+
 	schemaResearchArea= [('ResearchArea','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
 	data= statistics["researchArea"].items()
-   # Loading it into gviz_api.DataTable
+	 # Loading it into gviz_api.DataTable
 	data_table = gviz_api.DataTable(schemaResearchArea)
 	data_table.LoadData(data)
 	jsonResearchArea = data_table.ToJSon()
 	#return statistics
 	return render_template('statistics.html', statResearchArea = jsonResearchArea,statGeo = jsonGeolData,statDisease = jsonDiseaseData,statJournal = jsonJournalData,login_session = login_session)
-
-
-
 
 
 if __name__ == '__main__':

@@ -226,7 +226,7 @@ class User(Base):
 			'verified':self.verified,
 		}
 
-engine =  create_engine('mysql://root:mysql@localhost/metaDB')
+engine =  create_engine('mysql://root:yulab@localhost/metaDB')
 
 
 Base.metadata.create_all(engine)

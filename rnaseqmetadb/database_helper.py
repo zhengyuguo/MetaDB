@@ -69,30 +69,18 @@ def getAllInquiry():
 
 def getAllData():
 	'''Query each table and combine the information together'''
-	#try:
-	query_gene = session.query(Gene).all()
-	#return query_gene[0].Gene
-	gene_names = [x.Gene for x in query_gene]
-	gene_names = list(set(gene_names))
+	gene_names = list(set([x.Gene for x in session.query(Gene).all()]))
 	gene_names = sorted(gene_names, key=lambda x: x.lower())
-	#gene_names.sort()
 	if "" in gene_names:
 		gene_names.remove("")
 
-
-	query_disease = session.query(Disease).all()
-	disease_names = [x.disease for x in query_disease]
-	disease_names = list(set(disease_names))
+	disease_names = list(set([x.disease for x in session.query(Disease).all()]))
 	disease_names = sorted(disease_names, key=lambda x: x.lower())
-	#disease_names.sort()
 	if "" in disease_names:
 		disease_names.remove("")
 
-	query_tissue = session.query(Tissue).all()
-	tissue_names = [x.Tissue for x in query_tissue]
-	tissue_names = list(set(tissue_names))
+	tissue_names = list(set([x.Tissue for x in session.query(Tissue).all()]))
 	tissue_names = sorted(tissue_names, key=lambda x: x.lower())
-	#tissue_names.sort()
 	if "" in tissue_names:
 		tissue_names.remove("")
 
@@ -105,31 +93,23 @@ def getAllData():
 		data["ID"] = ID
 		#title.encode("UTF-8").decode("Shift-JIS")
 		data["title"] = title
-		####################### gene queried by ID ##########
-		query_gene = session.query(Gene).filter_by(ArrayExpress = ID).all()
-		gene = ""
-		for g in query_gene:
-			gene = gene+ " " + g.Gene
-		data["gene"] = gene
-		####################### Disease queried by ID ##########
-		query_disease = session.query(Disease).filter_by(ArrayExpress = ID).all()
-		disease = ""
-		for g in query_disease:
-			disease = disease+ " " + g.disease
-		data["disease"] = disease
-		####################### tissue queried by ID ##########
-		query_tissue = session.query(Tissue).filter_by(ArrayExpress = ID).all()
-		tissue = ""
-		for g in query_tissue:
-			tissue = tissue+ " " + g.Tissue
-		data["Tissue"] = tissue
+		data["gene"] = ", ".join([ g.Gene for g in session.query(Gene).filter_by(ArrayExpress = ID).all()])
+		data["disease"] = ", ".join([ g.disease for g in session.query(Disease).filter_by(ArrayExpress = ID).all()])
+		data["tissue"] = ", ".join([ g.Tissue for g in session.query(Tissue).filter_by(ArrayExpress = ID).all()])
 		DATAs.append(data)
 	return [gene_names, disease_names, tissue_names, DATAs]
-	#except:
-		#return [None, None, None, None]
 
-
-
+def getAccByConstraints(constraints):
+	acc = set([])
+	if 'Gene' in constraints.keys():
+		acc.update([ query.ArrayExpress for query in session.query(Gene).filter_by(Gene = constraints["Gene"]).all()])
+	if 'Disease' in constraints.keys():
+		acc.update([ query.ArrayExpress for query in session.query(Disease).filter_by(disease = constraints["Disease"]).all()])
+	if 'Tissue' in constraints.keys():
+		acc.update([ query.ArrayExpress for query in session.query(Tissue).filter_by(Tissue = constraints["Tissue"]).all()])
+	if len(constraints) == 0:
+		acc.update([ query.ArrayExpress for query in session.query(Main.ArrayExpress).all()])
+	return acc		
 
 def extractInfor(queries, constraints, filter_f):
 	'''Given queries, extract information.
@@ -238,9 +218,10 @@ def getAllInfor(AccessionID):
 		query = session.query(Genotype).filter_by(ArrayExpress = AccessionID).all()
 		data['Genotype'] =  [ x.Genotype for x in query ] 
 
-		query = session.query(Disease).filter_by(ArrayExpress = AccessionID)
-		data['disease'] = [ x.disease for x in query ] 
-		data['diseaseMesh'] =  [ x.diseaseMesh for x in query ]
+		query = session.query(Disease).filter_by(ArrayExpress = AccessionID).all()
+		data['disease'] = query 
+		#data['disease'] = [ x.disease for x in query ] 
+		#data['diseaseMesh'] =  [ x.diseaseMesh for x in query ]
 
 		query = session.query(Tissue).filter_by(ArrayExpress = AccessionID).all()
 		data['Tissue'] = query
