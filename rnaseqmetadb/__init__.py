@@ -182,13 +182,6 @@ def download():
 @app.route('/statistics/')
 def statistics():
 	statistics =(getStatistics())
-	schemaDisease= [('Disease','string'), ('Publications', 'number')] #in list form
-	#data must be in list form
-	data= statistics["disease"].items()
-	 # Loading it into gviz_api.DataTable
-	data_table = gviz_api.DataTable(schemaDisease)
-	data_table.LoadData(data)
-	jsonDiseaseData = data_table.ToJSon()
 
 	schemaJournal= [('Journal','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
@@ -200,21 +193,21 @@ def statistics():
 
 	schemaGeo= [('GeoLoation','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
-	data= statistics["GeoArea"].items()
+	data= statistics["geoArea"].items()
 	 # Loading it into gviz_api.DataTable
 	data_table = gviz_api.DataTable(schemaGeo)
 	data_table.LoadData(data)
 	jsonGeolData = data_table.ToJSon()
 
-	schemaResearchArea= [('ResearchArea','string'), ('Publications', 'number')] #in list form
+	schemaYear= [('Year','string'), ('Publications', 'number')] #in list form
 	#data must be in list form
-	data= statistics["researchArea"].items()
+	data= statistics["year"].items()
 	 # Loading it into gviz_api.DataTable
-	data_table = gviz_api.DataTable(schemaResearchArea)
+	data_table = gviz_api.DataTable(schemaYear)
 	data_table.LoadData(data)
-	jsonResearchArea = data_table.ToJSon()
-	#return statistics
-	return render_template('statistics.html', statResearchArea = jsonResearchArea,statGeo = jsonGeolData,statDisease = jsonDiseaseData,statJournal = jsonJournalData,login_session = login_session)
+	jsonYearData = data_table.ToJSon()
+
+	return render_template('statistics.html', statGeo = jsonGeolData,statJournal = jsonJournalData, statYear = jsonYearData, login_session = login_session)
 
 
 if __name__ == '__main__':
