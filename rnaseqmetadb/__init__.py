@@ -35,7 +35,9 @@ def home():
 	keyword = request.args.get("keyword")
 	if keyword:
 		 acc.intersection_update(set(getAccessionID(keyword)))
+		 
 	DATAs = [entry for entry in DATAs if entry['ID'] in acc]
+	print DATAs
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 
 @app.route('/submission/',   methods=['GET', 'POST'] )
