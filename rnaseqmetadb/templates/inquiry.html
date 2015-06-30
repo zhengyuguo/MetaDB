@@ -1,61 +1,61 @@
 {% extends "layout.html" %}
 {% block head %}
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 <!-- 
 This page will only be visible to administrator. Create an extra boolean field (status)in inquiry table
 Admin can approve or disapprove the inquiry. clicking submit button will toggle the status in database if check box is checked.
- -->
+-->
 <div class="col-md-12" style="min-height:60vh"">
-<div class="table-responsive">
-{% if login_session.get('login') is none%}
-  <p>You must login to manage inquiries.</p>
-{% elif not login_session.get('ismanager')%}
-  <p>You are not a manager.</p>
-{% else %}
-<table id="inquiryTable" class="table">
-<thead>
-<tr>
-<th>Accession ID</th>
-<th>PubMed ID</th>
-<th>Name</th>
-<th>Email</th>
-<th>Comment</th>
-<th>Status</th>
-<th>Change Status</th>
-</tr>
-</thead>
-<tbody>
-<!-- Use this form to get data of change status.
-you can get the 'ArrayExpress' from the id attribute of select. Or you can pass any unique id to use as attribute of select.
-It will not work in Internet Explorer
- -->
- <form action="" id="inquiryForm" method="POST">
-{% for data in dataRow%}
-<tr>
-<td>{{data.ArrayExpress}}</td>
-<td>{{data.PubMed}}</td>
-<td>{{data.name}}</td>
-<td>{{data.email}}</td>
-<td>{{data.comments}}</td>
-<td>{{data.status}}</td>
-<td><select name={{data.id}} form="inquiryForm">
-<option>No Change</option>
-<option>Unprocessed</option>
-<option>Approved</option>
-<option>Disapproved</option>
-<option>Delete This Item</option>
-</select></td>
-</tr>
-</form>
-{% endfor %}
-</tbody>
-</table>
-<div class="form-group pull-right">
-<button type="submit" id="inquiryButton" class="btn btn-primary " form="inquiryForm">Submit Changes</button>
-</div>
-{% endif %}
-</div>
+  <div class="table-responsive">
+    {% if login_session.get('login') is none%}
+    <p>You must login to manage inquiries.</p>
+    {% elif not login_session.get('ismanager')%}
+    <p>You are not a manager.</p>
+    {% else %}
+    <table id="inquiryTable" class="table">
+      <thead>
+        <tr>
+          <th>Accession ID</th>
+          <th>PubMed ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Comment</th>
+          <th>Status</th>
+          <th>Change Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Use this form to get data of change status.
+        you can get the 'ArrayExpress' from the id attribute of select. Or you can pass any unique id to use as attribute of select.
+        It will not work in Internet Explorer
+        -->
+        <form action="" id="inquiryForm" method="POST">
+          {% for data in dataRow%}
+          <tr>
+            <td>{{data.ArrayExpress}}</td>
+            <td>{{data.PubMed}}</td>
+            <td>{{data.name}}</td>
+            <td>{{data.email}}</td>
+            <td>{{data.comments}}</td>
+            <td>{{data.status}}</td>
+            <td><select name={{data.id}} form="inquiryForm">
+                <option>No Change</option>
+                <option>Unprocessed</option>
+                <option>Approved</option>
+                <option>Disapproved</option>
+                <option>Delete This Item</option>
+            </select></td>
+          </tr>
+        </form>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="form-group pull-right">
+      <button type="submit" id="inquiryButton" class="btn btn-primary " form="inquiryForm">Submit Changes</button>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock%}
