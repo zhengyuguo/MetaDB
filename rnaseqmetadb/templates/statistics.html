@@ -1,18 +1,19 @@
 {% extends "layout.html" %}
 {% block head %}
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 
 <div role="tabpanel">
-<div class="col-sm-3 sidebar">
-  <!-- Nav tabs -->
-  <ul class="nav nav-stacked" role="tablist">
-    <li role="presentation" class="active"><a href="#chart_div" aria-controls="chart_div" role="tab" data-toggle="tab">Publications by Geographic Location</a></li>
-    <li role="presentation"><a href="#chart_div2" aria-controls="chart_div2" role="tab" data-toggle="tab">Publications by Journal</a></li>
-    <li role="presentation"><a href="#chart_div3" aria-controls="chart_div3" role="tab" data-toggle="tab">Publications by Research Area</a></li>
-    <li role="presentation"><a href="#chart_div4" aria-controls="chart_div4" role="tab" data-toggle="tab">Publications by Disease</a></li>
-  </ul>
+  <div class="col-sm-3 sidebar">
+    <!-- Nav tabs -->
+    <ul class="nav nav-stacked" role="tablist">
+      <li role="presentation" class="active"><a href="#chart_div" aria-controls="chart_div" role="tab" data-toggle="tab">Publications by Geographic Location</a></li>
+      <li role="presentation"><a href="#chart_div2" aria-controls="chart_div2" role="tab" data-toggle="tab">Publications by Journal</a></li>
+      <li role="presentation"><a href="#chart_div3" aria-controls="chart_div3" role="tab" data-toggle="tab">Publications by Year</a></li>
+<!--      <li role="presentation"><a href="#chart_div3" aria-controls="chart_div3" role="tab" data-toggle="tab">Publications by Research Area</a></li> -->
+      <!--  <li role="presentation"><a href="#chart_div4" aria-controls="chart_div4" role="tab" data-toggle="tab">Publications by Disease</a></li> -->
+    </ul>
   </div>
 
   <!-- Tab panes -->
@@ -21,57 +22,64 @@
     <div role="tabpanel" class="tab-pane" id="chart_div2"></div>
     <div role="tabpanel" class="tab-pane" id="chart_div3"></div>
     <div role="tabpanel" class="tab-pane" id="chart_div4"></div>
-	<div style="margin-bottom:5px"></div>
+    <div style="margin-bottom:5px"></div>
   </div>
 </div>
 
 
 <script type="text/javascript">
-      // Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart']});
-	  google.setOnLoadCallback(drawChart);
-      // Set a callback to run when the Google Visualization API is loaded.
-      // Callback that creates and populates a data table, 
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
+  // Load the Visualization API and the piechart package.
+google.load('visualization', '1.0', {'packages':['corechart']});
+google.setOnLoadCallback(drawChart);
+// Set a callback to run when the Google Visualization API is loaded.
+// Callback that creates and populates a data table, 
+// instantiates the pie chart, passes in the data and
+// draws it.
+function drawChart() {
 
-      // Create the data table.
-	  //getting data in json format using google gviz_api
-      var data_disease = new google.visualization.DataTable({{statDisease | safe}});  
-	  var data_journal = new google.visualization.DataTable({{statJournal | safe}});
-		var data_researchArea = new google.visualization.DataTable({{statResearchArea | safe}});
-		var data_geo = new google.visualization.DataTable({{statGeo | safe}});
+  // Create the data table.
+  //getting data in json format using google gviz_api
+  //var data_disease = new google.visualization.DataTable({{statDisease | safe}});  
+  var data_journal = new google.visualization.DataTable({{statJournal | safe}});
+  //var data_researchArea = new google.visualization.DataTable({{statResearchArea | safe}});
+  var data_geo = new google.visualization.DataTable({{statGeo | safe}});
+  var data_year = new google.visualization.DataTable({{statYear | safe}});
 
-      // Set chart options
-      var options_disease = {'title':'Publications by Disease',
-                     'width':600,
-                     'height':400};
-					 
-					       // Set chart options
-      var options_journal = {'title':'Publications by Journal',
-                     'width':600,
-                     'height':400};
-	var options_researchArea = {'title':'Publications by Reasearch Area',
-                     'width':600,
-                     'height':400};
-	var options_geo = {'title':'Publications by Geographic Location',
-                     'width':600,
-                     'height':400};
+  // Set chart options
+//  var options_disease = {'title':'Publications by Disease',
+//    'width':600,
+//    'height':400};
 
-      // Instantiate and draw our chart, passing in some options.
-      var chart = new google.visualization.PieChart(document.getElementById('chart_div'));//Publications by Geographic Location
-      chart.draw(data_geo, options_geo);
-	  var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));//Publications by Journal
-      chart.draw(data_journal, options_journal);
-	  var chart = new google.visualization.PieChart(document.getElementById('chart_div3'));//Publications by Research Area
-      chart.draw( data_researchArea, options_researchArea);
-	   var chart = new google.visualization.PieChart(document.getElementById('chart_div4'));//Publications by Disease
-      chart.draw(data_disease, options_disease);
-	  
-    }
-	
+  // Set chart options
+  var options_journal = {'title':'Publications by Journal',
+    'width':600,
+    'height':400};
+//  var options_researchArea = {'title':'Publications by Reasearch Area',
+//    'width':600,
+//    'height':400};
+  var options_geo = {'title':'Publications by Geographic Location',
+    'width':600,
+    'height':400};
 
-    </script>
+  var options_year  = {'title':'Publications by Year',
+    'width':600,
+    'height':400};
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));//Publications by Geographic Location
+  chart.draw(data_geo, options_geo);
+  var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));//Publications by Journal
+  chart.draw(data_journal, options_journal);
+  var chart = new google.visualization.PieChart(document.getElementById('chart_div3'));
+  chart.draw(data_year, options_year);
+//  var chart = new google.visualization.PieChart(document.getElementById('chart_div3'));//Publications by Research Area
+//  chart.draw( data_researchArea, options_researchArea);
+//  var chart = new google.visualization.PieChart(document.getElementById('chart_div4'));//Publications by Disease
+//  chart.draw(data_disease, options_disease);
+
+}
+
+
+</script>
 
 {%endblock%}

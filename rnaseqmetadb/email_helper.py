@@ -1,19 +1,21 @@
+# vim: set noexpandtab tabstop=2:
 from flask.ext.mail import Message
-from __init__ import *
-from flask import render_template
+from flask import Flask, render_template
+from flask.ext.mail import Mail
 
+app = Flask(__name__)
 app.config.update(
     MAIL_USE_SSL= True,
     MAIL_USE_TLS=False, 
     MAIL_SERVER='smtp.gmail.com',
     MAIL_PORT=465,
-    MAIL_USERNAME= 'Your Gmail User Name',
-    MAIL_PASSWORD='Your Gmail Password'
+    MAIL_USERNAME= 'rnaseqmetadb@gmail.com',
+    MAIL_PASSWORD='YULABmetadb'
 )
-ADMINS = ['Your Gmail Address']
 
 mail = Mail(app)
 
+ADMINS = ['rnaseqmetadb@gmail.com']
 def send_email(subject, sender, recipients, html_body):
 	msg = Message(subject, sender = sender, recipients = recipients)
 	msg.body = "This is the email body"
@@ -27,12 +29,3 @@ def send_notification_email(newUser):
  				[newUser.email],
 				render_template("email.html",newUser = newUser))
 
-def send_email_test():
-	msg = Message(
-        'Hello',
-        sender='qiaowei8993@gmail.com',
-        recipients=
-        ['qiaowei8993@gmail.com'])
-	msg.body = "This is the email body"
-	mail.send(msg)
-	return "Sent"

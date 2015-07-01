@@ -1,76 +1,76 @@
 {% extends "layout.html" %}
 {% block head %}
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
 <div class="col-md-12" style="min-height:60vh">
-<form class="form-inline" action="">
-  <div class="form-group">
-    <label for="keyword">Key Word:</label>
-    <input type="text" class="form-control" name="keyword">
-  </div>
-  <div class="form-group">
-    <label for="genename">Gene Name:</label>
-    <select class="form-control search" name="genename">
-      <option>All</option>
-	{% for genename in gene_names %}
-  	<option>{{genename}}</option>
-  	{% endfor %}
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="diseasename">Disease Name:</label>
-     <select class="form-control search" name="diseasename">
-      <option>All</option>
-	{% for diseasename in disease_names %}
-  	<option>{{diseasename}}</option>
-  	{% endfor %}
-    </select>
-  </div>
-  <div class="space"></div>
+  <form class="form-inline" action="">
+    <div class="form-group">
+      <label for="keyword">Key Word:</label>
+      <input type="text" class="form-control" name="keyword">
+    </div>
+    <div class="form-group">
+      <label for="genename">Gene Name:</label>
+      <select class="form-control search" name="genename">
+        <option></option>
+        {% for genename in gene_names %}
+        <option>{{genename}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="diseasename">Disease Name:</label>
+      <select class="form-control search" name="diseasename">
+        <option></option>
+        {% for diseasename in disease_names %}
+        <option>{{diseasename}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="space"></div>
     <div class="form-group ">
-    <label for="tissuetype">Tissue Type:</label>
-     <select class="form-control search" name="tissuetype" >
-      <option>All</option>
-  	{% for tissuetype in tissue_names %}
-  	<option>{{tissuetype}}</option>
-  	{% endfor %}
-    </select>
+      <label for="tissuetype">Tissue Type:</label>
+      <select class="form-control search" name="tissuetype" >
+        <option></option>
+        {% for tissuetype in tissue_names %}
+        <option>{{tissuetype}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  <hr/>
+
+  <div class="table-responsive">
+    <table id="myTable" class="display">
+      <thead>
+        <tr>
+          <th>Accession ID</th>
+          <th>Title</th>
+          <th>Gene Name</th>
+          <th>Disease Name</th>
+          <th>TissueType</th> 
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in DATAs%} 
+        <tr>
+          <td><a href="{{url_for('home')+data["ID"]}}">{{data["ID"]}}</a></td>
+          <td>{{data["title"]}}</td>
+          <td>{{data["gene"]}}</td>
+          <td>{{data["disease"]}}</td>
+          <td>{{data["tissue"]}}</td>
+        </tr>
+        {% endfor%} 
+
+      </tbody>
+    </table>
   </div>
-  <button type="submit" class="btn btn-primary">Search</button>
-</form>
-<hr/>
-
-<div class="table-responsive">
-<table id="myTable" class="display">
-<thead>
-<tr>
-<th>Accession ID</th>
-<th>Title</th>
-<th>Gene Name</th>
-<th>Disease Name</th>
-<th>TissueType</th> 
-</tr>
-</thead>
-<tbody>
-{% for data in DATAs%} 
-<tr>
-<td><a href="{{url_for('home')+data["ID"]}}">{{data["ID"]}}</a></td>
-<td>{{data["title"]}}</td>
-<td>{{data["gene"]}}</td>
-<td>{{data["disease"]}}</td>
-<td>{{data["Tissue"]}}</td>
-</tr>
-{% endfor%} 
-
-</tbody>
-</table>
-</div>
 </div><!-- close col-md-12 .*-inner (main-content or sidebar, depending if sidebar is used) -->
 <script>
-$(document).ready(function(){
-    $('#myTable').DataTable();
-});
+  $(document).ready(function(){
+      $('#myTable').DataTable();
+      });
 </script>
 
 {% endblock %}

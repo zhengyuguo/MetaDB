@@ -5,20 +5,6 @@
 {% block content %}
 <!--
 This page will not be in menu. 
-Based on user click on home page search result(searchTable), we will take the accessionID and will show the details in this page 
-will provide necessary links. check this page http://sirius.ece.tamu.edu/rnaseqmetadb/search.php?AccessionID=71
-** data required 
-ArrayExpress
-Title
-Description
-Gene
-Genotype
-Keyword
-Disease
-Sample List
-Publication
-PubMed
-Lab Website
 -->
 <div class="col-sm-12">
   <div class="table-responsive">
@@ -70,11 +56,11 @@ Lab Website
         </td>
       </tr>
       <tr>
-        {% if dataRow["disease"]|length !=1 and dataRow["disease"] != "" %}
+        {% if dataRow["disease"][0].disease != "" %}
         <td>Disease</td>
         <td>
-          {% for disease in dataRow["disease"] %}
-          {{disease}} <br/>
+          {% for row in dataRow["disease"] %}
+          <a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/mesh/?term='+row.diseaseMesh}}">{{row.disease}}</a>
           {% endfor %}
         </td>
         {% endif %}
@@ -82,61 +68,61 @@ Lab Website
       <tr>
         <td>Sample List</td>
         <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow['ArrayExpress']+'/samples/'}}" >Check Sample List in ArrayExpress</a></td>
-    </tr>
-    <tr>
-      <td>Publication</td>
-      <td>
-	  <dl class="dl-horizontal">	 
-	  <dt>Title</dt>
-	  <dd>
-        {% for i in range(dataRow["Publication"]|length)%}
-        <a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/'+dataRow['PubMed'][i]}}">{{dataRow["Publication"][i]}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
-        {% endfor %} 
-		</dd>
+      </tr>
+      <tr>
+        <td>Publication</td>
+        <td>
+          <dl class="dl-horizontal">	 
+            <dt>Title</dt>
+            <dd>
+            {% for i in range(dataRow["Publication"]|length)%}
+            <a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/'+dataRow['PubMed'][i]}}">{{dataRow["Publication"][i]}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
+            {% endfor %} 
+            </dd>
             <dt>Authors</dt>
             <dd>
-              {{', '.join(dataRow["Author"])}} <br/> 
+            {{', '.join(dataRow["Author"])}} <br/> 
             </dd>
             <dt>Abstract</dt>
             <dd>
-              {% for abs in dataRow["Abstract"] %}
-              {{abs}} <br/>
-              {% endfor %}
+            {% for abs in dataRow["Abstract"] %}
+            {{abs}} <br/>
+            {% endfor %}
             </dd>
             <dt>Journal</dt>
             <dd>
-              {% for journal in dataRow["Journal"] %}
-              {{journal}} <br/>
-              {% endfor %}
+            {% for journal in dataRow["Journal"] %}
+            {{journal}} <br/>
+            {% endfor %}
             </dd>
             <dt>Year</dt>
             <dd>
-              {% for year in dataRow["Year"] %}
-              {{year}} <br/>
-              {% endfor %}
+            {% for year in dataRow["Year"] %}
+            {{year}} <br/>
+            {% endfor %}
             </dd>
-		  </dl>
-      </td>
-	  
-    </tr>
-	
-    <tr>
-      <td>PI Name</td>
-      <td><a target=_blank href="{{dataRow['Website']}}">{{dataRow['PI']}} </a> </td>
-    </tr>
-    <tr>
-      <td>Geographic Area</td>
-      <td>
-        {{dataRow["GeoArea"]}}<br/> 
-      </td>
-    </tr>
-    <tr>
-      <td>Research Area</td>
-      <td>
-        {{dataRow["ResearchArea"]}}<br/> 
-      </td>
-    </tr>
-  </table>
-</div>
+          </dl>
+        </td>
+
+      </tr>
+
+      <tr>
+        <td>PI Name</td>
+        <td><a target=_blank href="{{dataRow['Website']}}">{{dataRow['PI']}} </a> </td>
+      </tr>
+      <tr>
+        <td>Geographic Area</td>
+        <td>
+          {{dataRow["GeoArea"]}}<br/> 
+        </td>
+      </tr>
+      <tr>
+        <td>Research Area</td>
+        <td>
+          {{dataRow["ResearchArea"]}}<br/> 
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
 {%endblock%}
