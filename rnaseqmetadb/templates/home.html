@@ -8,7 +8,9 @@
     <div class="form-group">
       <label for="keyword">Key Word:</label>
       <input type="text" class="form-control" name="keyword">
+	  <span><strong>--AND--</strong></span>
     </div>
+	<div class="space"></div>
     <div class="form-group">
       <label for="genename">Gene Name:</label>
       <select class="form-control search" name="genename">
@@ -17,6 +19,7 @@
         <option>{{genename}}</option>
         {% endfor %}
       </select>
+	  <span><strong> --OR-- </strong></span>
     </div>
     <div class="form-group">
       <label for="diseasename">Disease Name:</label>
@@ -26,8 +29,8 @@
         <option>{{diseasename}}</option>
         {% endfor %}
       </select>
+	  <span><strong> --OR-- </strong></span>
     </div>
-    <div class="space"></div>
     <div class="form-group ">
       <label for="tissuetype">Tissue Type:</label>
       <select class="form-control search" name="tissuetype" >
