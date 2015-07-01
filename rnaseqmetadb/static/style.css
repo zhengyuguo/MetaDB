@@ -135,6 +135,12 @@ margin-top:50px;
   color: #fff;
   background-color: #428bca;
 }
+
+.dataset tr td:first-child{
+min-width:150px !important;
+padding-left:16px !important;
+font-weight:bold !important;
+}
 /*navbar custom from twitterbootstrap3navbars.w3masters.nl */
 .navbar-custom {
   background-color: #033c70;
