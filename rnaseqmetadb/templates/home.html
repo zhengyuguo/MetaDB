@@ -16,7 +16,7 @@
       <select class="form-control search" name="genename">
         <option></option>
         {% for genename in gene_names %}
-        <option>{{genename}}</option>
+        <option value="{{genename}}">{{genename}}</option>
         {% endfor %}
       </select>
 	  <span><strong> --OR-- </strong></span>
@@ -24,9 +24,9 @@
     <div class="form-group">
       <label for="diseasename">Disease Name:</label>
       <select class="form-control search" name="diseasename">
-        <option></option>
+        <option value=""></option>
         {% for diseasename in disease_names %}
-        <option>{{diseasename}}</option>
+        <option value="{{diseasename}}">{{diseasename}}</option>
         {% endfor %}
       </select>
 	  <span><strong> --OR-- </strong></span>
@@ -36,7 +36,7 @@
       <select class="form-control search" name="tissuetype" >
         <option></option>
         {% for tissuetype in tissue_names %}
-        <option>{{tissuetype}}</option>
+        <option value="{{tissuetype}}">{{tissuetype}}</option>
         {% endfor %}
       </select>
     </div>
@@ -73,6 +73,35 @@
 <script>
   $(document).ready(function(){
       $('#myTable').DataTable();
+      });
+</script>
+<script>
+$( "form" ).submit(function( event ) {
+var selectedkeyword = $("input[name='keyword']").val();
+localStorage.setItem("keyword", selectedkeyword);
+var selectedgene = $("[name='genename'] option:selected").val();
+localStorage.setItem("genename", selectedgene);
+var selecteddisease = $("[name='diseasename'] option:selected").val();
+localStorage.setItem("diseasename", selecteddisease);
+var selectedtissue = $("[name='tissuetype'] option:selected").val();
+localStorage.setItem("tissuetype", selectedtissue);
+    return;
+  });
+ $(document).ready(function(){
+//select the options which were selected previously
+// Check browser support,
+if (typeof(Storage) != "undefined") {
+    // Store	
+	debugger;
+		$("input[name='keyword']").val(localStorage.getItem('keyword'));
+	$("[name='genename'] option[value='"+localStorage.getItem('genename')+"']").attr('selected','selected');
+	$("[name='diseasename'] option[value='"+localStorage.getItem('diseasename')+"']").attr('selected','selected');
+	$("[name='tissuetype'] option[value='"+localStorage.getItem('tissuetype')+"']").attr('selected','selected');
+
+
+} else {
+	document.write("undefined");
+}
       });
 </script>
 
