@@ -179,8 +179,14 @@ def inquiry():
 @app.route('/download/')
 def download():
 	return render_template('download.html',login_session = login_session)
+@app.route('/error/')
+def error():
+	return render_template('404.html',login_session = login_session)
 
-
+@app.route('/publication/')
+def publication():
+	return render_template('publication.html',login_session = login_session)
+	
 @app.route('/statistics/')
 def statistics():
 	statistics =(getStatistics())

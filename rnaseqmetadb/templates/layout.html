@@ -63,6 +63,7 @@
                     {% if login_session.get('ismanager') %}
                     <li><a href="{{url_for('inquiry')}}">Inquiry</a></li>  <!-- Will be visible to only administrator-->
                     {% endif %}
+					<li><a href="{{url_for('publication')}}">Publications</a></li>
                     <li><a href="{{url_for('download')}}">Download</a></li>
                     <li><a href="{{url_for('contactus')}}">Contact Us</a></li>
                   </ul>
