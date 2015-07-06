@@ -1,5 +1,5 @@
 # vim: set noexpandtab tabstop=2:
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, send_file
 from flask import session as login_session
 
 from webSearch import *
@@ -175,9 +175,15 @@ def inquiry():
 	return render_template('inquiry.html', dataRow = dataRow, login_session = login_session)
 
 
-@app.route('/download/')
+@app.route('/download/', methods=['GET', 'POST'])
 def download():
-	return render_template('download.html',login_session = login_session)
+	if request.method == 'GET' or login_session.get('login') is None:
+		return render_template('download.html',login_session = login_session)
+	else:
+		print "xxxxxxxxxxxxxxxxx"
+		file_name = './download/test.txt' 
+		return send_file(file_name, as_attachment=True)
+		
 
 
 @app.route('/statistics/')

@@ -9,7 +9,9 @@ Add functionality to download all data in csv format -->
 	{% if login_session.get('login') is none%}
   <p>You must have an account to be able to download</p>
 	{% else %}
-  <a class="btn btn-primary btn-lg" href="#" role="button">Click to Bulk Download</a>
+	<form action="" method = "POST">
+  		<button type="submit" style="font-size:18pt" class="btn btn-primary">Click to Bulk Download</button>
+	</form>
 	{% endif %}
   </div>
   <div class="col-sm-4"></div>
