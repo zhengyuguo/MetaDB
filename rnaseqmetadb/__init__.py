@@ -1,5 +1,5 @@
 # vim: set noexpandtab tabstop=2:
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, send_file
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from flask import session as login_session
 
 from webSearch import *
@@ -37,6 +37,7 @@ def home():
 		 acc.intersection_update(set(getAccessionID(keyword)))
 		 
 	DATAs = [entry for entry in DATAs if entry['ID'] in acc]
+	print DATAs
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = DATAs, login_session = login_session ) 
 
 @app.route('/submission/',   methods=['GET', 'POST'] )
@@ -175,17 +176,17 @@ def inquiry():
 	return render_template('inquiry.html', dataRow = dataRow, login_session = login_session)
 
 
-@app.route('/download/', methods=['GET', 'POST'])
+@app.route('/download/')
 def download():
-	if request.method == 'GET' or login_session.get('login') is None:
-		return render_template('download.html',login_session = login_session)
-	else:
-		print "xxxxxxxxxxxxxxxxx"
-		file_name = './download/test.txt' 
-		return send_file(file_name, as_attachment=True)
-		
+	return render_template('download.html',login_session = login_session)
+@app.route('/error/')
+def error():
+	return render_template('404.html',login_session = login_session)
 
-
+@app.route('/publication/')
+def publication():
+	return render_template('publication.html',login_session = login_session)
+	
 @app.route('/statistics/')
 def statistics():
 	statistics =(getStatistics())
