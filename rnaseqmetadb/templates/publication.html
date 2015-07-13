@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="col-sm-12" style="min-height:60vh">
+  <div class="table-responsive">
+    <table id="publicationTable" class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>PI Name</th>
+          <th>Journal</th>
+          <th>Year</th>
+          <th>Dataset</th> 
+        </tr>
+      </thead>
+      <tbody>
+	  <tr>
+	  <td>sample title</td>
+	  <td>sample pi name</td>
+	  <td>sample journal</td>
+	  <td>sample year</td>
+	  <td>sample data set</td>
+	  </tr>
+	  </tbody>
+    </table>
+  </div>
+</div><!-- close col-md-12 .*-inner (main-content or sidebar, depending if sidebar is used) -->
+{% endblock%}
