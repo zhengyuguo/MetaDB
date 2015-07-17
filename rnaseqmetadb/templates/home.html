@@ -5,42 +5,47 @@
 {% block content %}
 <div class="col-md-12" style="min-height:60vh">
   <form class="form-inline" action="">
-    <div class="form-group">
-      <label for="keyword">Key Word:</label>
-      <input type="text" class="form-control" name="keyword">
-	  <span><strong>--AND--</strong></span>
+    <div class="row col-lg-12">
+      <div class="form-group">
+        <label for="keyword">Key Word:</label>
+        <input type="text" class="form-control" name="keyword">
+      </div>
+      <button type="submit" class="btn btn-primary pull-right">Search</button>
     </div>
-	<div class="space"></div>
-    <div class="form-group">
-      <label for="genename">Gene Name:</label>
-      <select class="form-control search" name="genename">
-        <option></option>
-        {% for genename in gene_names %}
-        <option value="{{genename}}">{{genename}}</option>
-        {% endfor %}
-      </select>
-	  <span><strong> --OR-- </strong></span>
+    <div class="row col-lg-12">
+        <span><strong>--AND--</strong></span>
     </div>
-    <div class="form-group">
-      <label for="diseasename">Disease Name:</label>
-      <select class="form-control search" name="diseasename">
-        <option value=""></option>
-        {% for diseasename in disease_names %}
-        <option value="{{diseasename}}">{{diseasename}}</option>
-        {% endfor %}
-      </select>
-	  <span><strong> --OR-- </strong></span>
+    <div class="row col-lg-12">
+      <div class="form-group">
+        <label for="genename">Gene Name:</label>
+        <select class="form-control search input-sm" name="genename">
+          <option></option>
+          {% for genename in gene_names %}
+          <option value="{{genename}}">{{genename}}</option>
+          {% endfor %}
+        </select>
+        <span><strong> --OR-- </strong></span>
+      </div>
+      <div class="form-group">
+        <label for="diseasename">Disease Name:</label>
+        <select class="form-control search input-sm" name="diseasename">
+          <option value=""></option>
+          {% for diseasename in disease_names %}
+          <option value="{{diseasename}}">{{diseasename}}</option>
+          {% endfor %}
+        </select>
+        <span><strong> --OR-- </strong></span>
+      </div>
+      <div class="form-group ">
+        <label for="tissuetype">Tissue Type:</label>
+        <select class="form-control search input-sm" name="tissuetype" >
+          <option></option>
+          {% for tissuetype in tissue_names %}
+          <option value="{{tissuetype}}">{{tissuetype}}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
-    <div class="form-group ">
-      <label for="tissuetype">Tissue Type:</label>
-      <select class="form-control search" name="tissuetype" >
-        <option></option>
-        {% for tissuetype in tissue_names %}
-        <option value="{{tissuetype}}">{{tissuetype}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Search</button>
   </form>
   <hr/>
 
@@ -58,7 +63,7 @@
       <tbody>
         {% for data in DATAs%} 
         <tr>
-          <td><a href="{{url_for('home')+data["ID"]}}">{{data["ID"]}}</a></td>
+          <td><a href="{{url_for('home')+'experiments/'+data["ID"]}}">{{data["ID"]}}</a></td>
           <td>{{data["title"]}}</td>
           <td>{{data["gene"]}}</td>
           <td>{{data["disease"]}}</td>
@@ -74,35 +79,35 @@
   $(document).ready(function(){
       $('#myTable').DataTable();
       });
-</script>
-<script>
-$( "form" ).submit(function( event ) {
-var selectedkeyword = $("input[name='keyword']").val();
-localStorage.setItem("keyword", selectedkeyword);
-var selectedgene = $("[name='genename'] option:selected").val();
-localStorage.setItem("genename", selectedgene);
-var selecteddisease = $("[name='diseasename'] option:selected").val();
-localStorage.setItem("diseasename", selecteddisease);
-var selectedtissue = $("[name='tissuetype'] option:selected").val();
-localStorage.setItem("tissuetype", selectedtissue);
-    return;
-  });
- $(document).ready(function(){
-//select the options which were selected previously
-// Check browser support,
-if (typeof(Storage) != "undefined") {
+    </script>
+    <script>
+      $( "form" ).submit(function( event ) {
+          var selectedkeyword = $("input[name='keyword']").val();
+          localStorage.setItem("keyword", selectedkeyword);
+          var selectedgene = $("[name='genename'] option:selected").val();
+          localStorage.setItem("genename", selectedgene);
+          var selecteddisease = $("[name='diseasename'] option:selected").val();
+          localStorage.setItem("diseasename", selecteddisease);
+          var selectedtissue = $("[name='tissuetype'] option:selected").val();
+          localStorage.setItem("tissuetype", selectedtissue);
+          return;
+          });
+$(document).ready(function(){
+    //select the options which were selected previously
+    // Check browser support,
+    if (typeof(Storage) != "undefined") {
     // Store	
-	debugger;
-		$("input[name='keyword']").val(localStorage.getItem('keyword'));
-	$("[name='genename'] option[value='"+localStorage.getItem('genename')+"']").attr('selected','selected');
-	$("[name='diseasename'] option[value='"+localStorage.getItem('diseasename')+"']").attr('selected','selected');
-	$("[name='tissuetype'] option[value='"+localStorage.getItem('tissuetype')+"']").attr('selected','selected');
+    debugger;
+    $("input[name='keyword']").val(localStorage.getItem('keyword'));
+    $("[name='genename'] option[value='"+localStorage.getItem('genename')+"']").attr('selected','selected');
+    $("[name='diseasename'] option[value='"+localStorage.getItem('diseasename')+"']").attr('selected','selected');
+    $("[name='tissuetype'] option[value='"+localStorage.getItem('tissuetype')+"']").attr('selected','selected');
 
 
-} else {
-	document.write("undefined");
-}
-      });
-</script>
+    } else {
+    document.write("undefined");
+    }
+    });
+  </script>
 
-{% endblock %}
+  {% endblock %}
