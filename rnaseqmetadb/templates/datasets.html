@@ -49,6 +49,14 @@ This page will not be in menu.
           {% endfor %}
         </td>
       </tr>
+          {% for row in data["Age"] %}
+      <tr>
+        <td>Age</td>
+        <td>
+          {{row["Age"]}} <br/>
+        </td>
+      </tr>
+          {% endfor %}
       <tr>
         <td>Keyword</td>
         <td>

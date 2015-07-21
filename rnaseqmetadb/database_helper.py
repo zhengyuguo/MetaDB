@@ -74,6 +74,8 @@ def getAllInfor(AccessionID):
 	data['Author'] = ", ".join([ x.Author for x in query ])
 	query = local_session.query(Publication_Keyword).filter_by(ArrayExpress = AccessionID).all()
 	data['keyword'] = ", ".join([ x.keyword for x in query ])
+	query = local_session.query(Age).filter_by(ArrayExpress = AccessionID).all()
+	data['Age'] = [ x.__dict__ for x in query ]
 	local_session.close()
 
 	return data
@@ -86,7 +88,7 @@ def getStatistics():
 		statistics["journal"] = {key : count for id, count, key in journal_query}
 		year_query = local_session.query(distinct(Publication.PubMed),func.count(Publication.Year),Publication.Year).group_by(Publication.Year).all()
 		statistics["year"] = {key : count for id, count, key in year_query} 
-		geoArea_query = local_session.query(distinct(Main.ArrayExpress),func.count(Main.GeoArea),Main.GeoArea).group_by(Main.GeoArea).all()
+		geoArea_query = local_session.query(distinct(Main.PI),func.count(distinct(Main.PI)),Main.GeoArea).group_by(Main.GeoArea).all()
 		statistics["geoArea"] = {key : count for id, count, key in geoArea_query}
 		local_session.close()
 	except:
