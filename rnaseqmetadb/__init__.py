@@ -211,6 +211,9 @@ def inquiry():
 @app.route('/publication/')
 def publication():
 	return render_template('publication.html',login_session = login_session)
+@app.route('/help/')
+def help():
+	return render_template('help.html',login_session = login_session)
 	
 if __name__ == '__main__':
 	app.secret_key = 'super secret key'

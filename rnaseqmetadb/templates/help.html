@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="col-md-12" style="min-height:60vh">
+<div class="page-header">
+  <h3>How to search for public experiments</h3>
+</div>
+<h4>Search by keyword</h4>
+<p>
+Enter an <strong>keyword</strong>  in the text box at top left corner of <a href="{{url_for('home')}}">home</a> page.
+Keep other drop down boxes blank to search by only keyword. Other search criteria e,g; gene, disease are <strong>AND</strong> conditioned with keyword.
+</p>
+<h4>Search by gene name or disease name or tissue type</h4>
+<p >
+Below keyword text box at <a href="{{url_for('home')}}">home</a> page, there are three drop down boxes for gene name, disease name and tissue type. Select your
+desired gene name, disease name or tissue type from the drop down boxes. These three search criteria are <strong>OR</strong> conditioned with each other and
+<strong>AND</strong> conditioned with keyword. You can opt out any search criteria by leaving it blank. For example, to search by only gene name,
+select the gene name from drop down box and leave other search criteria blank. To search by gene name or disease name, select gene and disease and leave
+keyword and tissue type blank. Leaving every search fields blank will show every entry  of the database.
+After every search the system will remember your search criteria and will pre fill those criteria. To nullify the effect make it blank.
+</p>
+<img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/searchbygene.png')}}"> <br/>
+<h4>Filter your search</h4>
+<p>After successful search you can even filter it with typing any word in search box at right side of <a href="{{url_for('home')}}">home</a> page
+to show the entries containing that word. To sort the table click the caret icon available at every column heading.</p>
+<img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/filter.png')}}">
+<br/>
+<br/>
+</div>
+{% endblock %}
