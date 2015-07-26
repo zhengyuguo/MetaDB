@@ -11,55 +11,63 @@ This page will not be in menu.
     <table class="table dataset">
       <tr>
         <td>ArrayExpress</td>
-        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow["ArrayExpress"]}}">{{dataRow["ArrayExpress"]}}</a></td>
+        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+data["ArrayExpress"]}}">{{data["ArrayExpress"]}}</a></td>
       </tr>
       <tr>
         <td>GEO Accession</td>
-        <td><a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc='+dataRow["GEO"]}}">{{dataRow["GEO"]}}</a></td> <!-- modify the link-->
+        <td><a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc='+data["GEO"]}}">{{data["GEO"]}}</a></td> <!-- modify the link-->
       </tr>
       <tr>
         <td>Title</td>
-        <td>{{dataRow["Title"]}}</td>
+        <td>{{data["Title"]}}</td>
       </tr>
       <tr>
         <td>Description</td>
-        <td>{{dataRow["description"]}}</td>
+        <td>{{data["description"]}}</td>
       </tr>
       <tr>
         <td>Gene</td>
         <td>
-          {% for i in range(dataRow["Gene"]|length) %}
-          <a target=_blank href="{{'http://www.informatics.jax.org/marker/'+dataRow["GeneMGI"][i]}}">{{dataRow["Gene"][i]}} </a> <br/> <!-- replace gene with gene MGI in the link-->
+          {% for i in data["Gene"] %}
+          <a target=_blank href="{{'http://www.informatics.jax.org/marker/'+i["GeneMGI"]}}">{{i["Gene"]}} </a> <br/> <!-- replace gene with gene MGI in the link-->
           {% endfor %}
         </td>
       </tr>
       <tr>
         <td>Genotype</td>
         <td>
-          {% for Genotype in dataRow["Genotype"] %}
-          {{Genotype}} <br/>
+          {% for row in data["Genotype"] %}
+          {{row["Genotype"]}} <br/>
           {% endfor %}
         </td>
       </tr>
       <tr>
         <td>Tissue</td>
         <td>
-          {% for row in dataRow['Tissue'] %}
+          {% for row in data['Tissue'] %}
           <a target=_blank href="{{'http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=BTO&termId='+row.TissueID}}">{{row.Tissue}}</a>
           {% endfor %}
         </td>
       </tr>
+          {% for row in data["Age"] %}
+      <tr>
+        <td>Age</td>
+        <td>
+          {{row["Age"]}} <br/>
+        </td>
+      </tr>
+          {% endfor %}
       <tr>
         <td>Keyword</td>
         <td>
-          {{'; '.join(dataRow["keyword"])}}
+          {{data["keyword"]}}
         </td>
       </tr>
       <tr>
-        {% if dataRow["disease"][0].disease != "" %}
+        {% if data["disease"]|length != 0 %}
         <td>Disease</td>
         <td>
-          {% for row in dataRow["disease"] %}
+          {% for row in data["disease"] %}
           <a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/mesh/?term='+row.diseaseMesh}}">{{row.disease}}</a>
           {% endfor %}
         </td>
@@ -67,59 +75,51 @@ This page will not be in menu.
       </tr>
       <tr>
         <td>Sample List</td>
-        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+dataRow['ArrayExpress']+'/samples/'}}" >Check Sample List in ArrayExpress</a></td>
+        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+data['ArrayExpress']+'/samples/'}}" >Check Sample List in ArrayExpress</a></td>
       </tr>
       <tr>
         <td>Publication</td>
         <td>
+          {% for i in data["Publication"]%}
           <dl class="dl-horizontal">	 
             <dt>Title</dt>
             <dd>
-            {% for i in range(dataRow["Publication"]|length)%}
-            <a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/'+dataRow['PubMed'][i]}}">{{dataRow["Publication"][i]}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
-            {% endfor %} 
+            <a target=_blank href="{{'http://www.ncbi.nlm.nih.gov/pubmed/'+i["PubMed"]}}">{{i["Title"]}}</a> <br/> <!--Add appropriate pubmed ID in the link-->
             </dd>
             <dt>Authors</dt>
             <dd>
-            {{', '.join(dataRow["Author"])}} <br/> 
+            {{data["Author"]}} <br/> 
             </dd>
             <dt>Abstract</dt>
             <dd>
-            {% for abs in dataRow["Abstract"] %}
-            {{abs}} <br/>
-            {% endfor %}
+            {{i["Abstract"]}} <br/>
             </dd>
             <dt>Journal</dt>
             <dd>
-            {% for journal in dataRow["Journal"] %}
-            {{journal}} <br/>
-            {% endfor %}
+            {{i["Journal"]}} <br/>
             </dd>
             <dt>Year</dt>
             <dd>
-            {% for year in dataRow["Year"] %}
-            {{year}} <br/>
-            {% endfor %}
+            {{i["Year"]}} <br/>
             </dd>
           </dl>
+          {% endfor %}
         </td>
-
       </tr>
-
       <tr>
         <td>PI Name</td>
-        <td><a target=_blank href="{{dataRow['Website']}}">{{dataRow['PI']}} </a> </td>
+        <td><a target=_blank href="{{data['Website']}}">{{data['PI']}} </a> </td>
       </tr>
       <tr>
         <td>Geographic Area</td>
         <td>
-          {{dataRow["GeoArea"]}}<br/> 
+          {{data["GeoArea"]}}<br/> 
         </td>
       </tr>
       <tr>
         <td>Research Area</td>
         <td>
-          {{dataRow["ResearchArea"]}}<br/> 
+          {{data["ResearchArea"]}}<br/> 
         </td>
       </tr>
     </table>
