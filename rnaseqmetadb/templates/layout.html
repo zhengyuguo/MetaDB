@@ -36,6 +36,56 @@
   No data required from back end in this page
   .....-->
   <body>
+  <!--
+  This is a popup modal for accepting terms and policy. User must accept the policy to use the website. It will pop up on window load.
+  -->
+<div class="modal fade" id="terms-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	  <form action="" method="post" id="terms-form">
+        <h4 class="modal-title">Terms and Conditions</h4>
+      </div>
+      <div class="modal-body">
+     <p>Terms and conditions will come here</p>
+	 <input type="checkbox" id="terms-check"><span> &nbsp I accept the terms and conditions of using the website.</span>
+      </div>
+      <div class="modal-footer">
+         <button type="submit" class="btn btn-primary">Accept</button>
+		 </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  <script type="text/javascript">
+          $(document).ready(function() {
+		  if (typeof(Storage) != "undefined") {
+		  var accepted=localStorage.getItem("terms-accepted");
+		  console.log(accepted);
+		  if(!accepted){
+			$('#terms-modal').modal({
+  keyboard: false,
+  backdrop:'static'
+});
+}}
+else{
+alert("try to use updated browser");
+}
+var check=$("#terms-check");
+console.log(check);
+$("#terms-form").on('submit',function(e){
+if(check.prop("checked")){
+$('#terms-modal').modal('hide');
+localStorage.setItem("terms-accepted", true);
+e.preventDefault();
+}
+else{
+alert("You cannot use the website without accepting the terms and conditions");
+e.preventDefault();
+}
+})
+})
+  </script>
+</div><!-- /.modal -->
 
     <div class="main-content gradient">  
 
