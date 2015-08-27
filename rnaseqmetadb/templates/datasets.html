@@ -11,7 +11,11 @@ This page will not be in menu.
     <table class="table dataset">
       <tr>
         <td>ArrayExpress</td>
-        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+data["ArrayExpress"]}}">{{data["ArrayExpress"]}}</a></td>
+        <td><a target=_blank href="{{'http://www.ebi.ac.uk/arrayexpress/experiments/'+data["ArrayExpress"]}}">{{data["ArrayExpress"]}}</a>
+		<a href="{{url_for('submission')+data['ArrayExpress']}}" class="pull-right"><button type="button" class="btn btn-default">
+		<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> &nbspReport curation error</button></a>
+		</td>
+		
       </tr>
       <tr>
         <td>GEO Accession</td>
