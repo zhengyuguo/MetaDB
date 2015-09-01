@@ -6,22 +6,22 @@
 <div class="col-md-12" style="min-height:60vh">
   <form class="form-horizontal" action="">
     <div class="form-group">
-	<div class="col-sm-4">
-      <label for="keyword" class="col-sm-3" >Keyword:</label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" name="keyword">
-      </div>
-    </div>  
-</div>	
+      <div class="col-sm-4">
+        <label for="keyword" class="col-sm-3" >Keyword:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="keyword">
+        </div>
+      </div>  
+    </div>	
     <div class="form-group">
-	<div class="col-sm-4">
-      <div class="col-sm-9 col-sm-offset-3"><span><strong>--AND--</strong></span></div>
-	  </div>
+      <div class="col-sm-4">
+        <div class="col-sm-9 col-sm-offset-3"><span><strong>--AND--</strong></span></div>
+      </div>
     </div>
     <div class="form-group">
       <div class="col-sm-4">
         <label for="genename" class="col-sm-3">Gene:</label>
-        <div class="col-sm-7">
+        <div class="col-sm-6">
           <select class="form-control search input-sm" name="genename">
             <option></option>
             {% for genename in gene_names %}
@@ -29,14 +29,14 @@
             {% endfor %}
           </select>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <span><strong>-OR-</strong></span>
         </div>
       </div>
 
       <div class="col-sm-4">
         <label for="diseasename" class="col-sm-3">Disease:</label>
-        <div class="col-sm-7">
+        <div class="col-sm-6">
           <select class="form-control search input-sm" name="diseasename">
             <option value=""></option>
             {% for diseasename in disease_names %}
@@ -44,13 +44,13 @@
             {% endfor %}
           </select>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <span><strong>-OR-</strong></span>
         </div>
       </div>
       <div class="col-sm-4">
         <label for="tissuetype" class="col-sm-3">Tissue:</label>
-        <div class="col-sm-7">
+        <div class="col-sm-6">
           <select class="form-control search input-sm" name="tissuetype" >
             <option></option>
             {% for tissuetype in tissue_names %}
@@ -62,11 +62,11 @@
     </div>
 
     <div class="form-group ">
-	<div class="col-sm-4">
-      <div class="col-sm-offset-3 col-sm-11 ">
-        <button type="submit" class="btn btn-primary">Search</button>
+      <div class="col-sm-4">
+        <div class="col-sm-offset-3 col-sm-11 ">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
       </div>
-	  </div>
     </div>
   </form>
   <hr/>
@@ -101,19 +101,19 @@
   $(document).ready(function(){
       $('#myTable').DataTable();
       });
-    </script>
-    <script>
-      $( "form" ).submit(function( event ) {
-          var selectedkeyword = $("input[name='keyword']").val();
-          localStorage.setItem("keyword", selectedkeyword);
-          var selectedgene = $("[name='genename'] option:selected").val();
-          localStorage.setItem("genename", selectedgene);
-          var selecteddisease = $("[name='diseasename'] option:selected").val();
-          localStorage.setItem("diseasename", selecteddisease);
-          var selectedtissue = $("[name='tissuetype'] option:selected").val();
-          localStorage.setItem("tissuetype", selectedtissue);
-          return;
-          });
+</script>
+<script>
+  $( "form" ).submit(function( event ) {
+      var selectedkeyword = $("input[name='keyword']").val();
+      localStorage.setItem("keyword", selectedkeyword);
+      var selectedgene = $("[name='genename'] option:selected").val();
+      localStorage.setItem("genename", selectedgene);
+      var selecteddisease = $("[name='diseasename'] option:selected").val();
+      localStorage.setItem("diseasename", selecteddisease);
+      var selectedtissue = $("[name='tissuetype'] option:selected").val();
+      localStorage.setItem("tissuetype", selectedtissue);
+      return;
+      });
 $(document).ready(function(){
     //select the options which were selected previously
     // Check browser support,
@@ -130,6 +130,6 @@ $(document).ready(function(){
     document.write("undefined");
     }
     });
-  </script>
+</script>
 
-  {% endblock %}
+{% endblock %}

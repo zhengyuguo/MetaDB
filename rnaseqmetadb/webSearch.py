@@ -1,4 +1,5 @@
 import urllib2
+import urllib
 import re
 
 class PageClass:
@@ -15,7 +16,8 @@ class PageClass:
 
 def getAccessionID(keyword):
 	#url = "http://www.ebi.ac.uk/arrayexpress/xml/v2/experiments?query=exptype%3ARNA-seq+organism%3A\"Mus+musculus\"" + keyword
-	url = 'http://www.ebi.ac.uk/arrayexpress/xml/v2/experiments?keywords='+keyword+'&organism=Mus+musculus&exptype%5B%5D="RNA-seq"&exptype%5B%5D="sequencing+assay"&array='
+	url = 'http://www.ebi.ac.uk/arrayexpress/xml/v2/experiments?'+urllib.urlencode({'query':keyword})+'&organism=Mus+musculus&exptype%5B%5D="RNA-seq"&exptype%5B%5D="sequencing+assay"&array='
+	print url
 	html = PageClass(url).read_page()
 
 	find_re = re.compile(r'<accession>(.*?)</accession>')

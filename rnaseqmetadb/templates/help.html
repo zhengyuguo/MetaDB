@@ -4,29 +4,77 @@
 {% endblock %}
 {% block content %}
 <div class="col-md-12" style="min-height:60vh">
-<div class="page-header">
-  <h3>How to search for public experiments</h3>
-</div>
-<h4>Search by keyword</h4>
-<p>
-Enter an <strong>keyword</strong>  in the text box at top left corner of <a href="{{url_for('home')}}">home</a> page.
-Keep other drop down boxes blank to search by only keyword. Other search criteria e,g; gene, disease are <strong>AND</strong> conditioned with keyword.
-</p>
-<h4>Search by gene name or disease name or tissue type</h4>
-<p >
-Below keyword text box at <a href="{{url_for('home')}}">home</a> page, there are three drop down boxes for gene name, disease name and tissue type. Select your
-desired gene name, disease name or tissue type from the drop down boxes. These three search criteria are <strong>OR</strong> conditioned with each other and
-<strong>AND</strong> conditioned with keyword. You can opt out any search criteria by leaving it blank. For example, to search by only gene name,
-select the gene name from drop down box and leave other search criteria blank. To search by gene name or disease name, select gene and disease and leave
-keyword and tissue type blank. Leaving every search fields blank will show every entry  of the database.
-After every search the system will remember your search criteria and will pre fill those criteria. To nullify the effect make it blank.
-</p>
-<img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/searchbygene.png')}}"> <br/>
-<h4>Filter your search</h4>
-<p>After successful search you can even filter it with typing any word in search box at right side of <a href="{{url_for('home')}}">home</a> page
-to show the entries containing that word. To sort the table click the caret icon available at every column heading.</p>
-<img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/filter.png')}}">
-<br/>
-<br/>
+  <div class="page-header">
+    <h3>How to search for public experiments</h3>
+  </div>
+  <ul><h4>Search by keyword</h4></ul>
+  <ul><p>
+      Enter a <strong>keyword</strong> in the query box at the top-left corner of <a href="{{url_for('home')}}">home</a> page. The keyword could be accession numbers, disease names, gene symbols, tissue types or any other terms of interest. Leave it blank if you do not want to search with a keyword.
+  </p></ul>
+  <ul><h4>Search by gene name or disease name or tissue type</h4></ul>
+  <ul><p>
+      To do a more specific search on gene symbols, disease names and tissue types, you can select the terms provided by the drop-down boxes and then submit the requests. Leave the corresponding drop-down box blank if you do not want to use the criteria to query the database.
+  </p></ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/searchbygene.png')}}"> <br/></ul>
+  <ul><h4>Relationships between different criteria</h4></ul>
+  <ul><p>
+      The relationships between Gene, "Disease" and "Tissue" are <strong>OR</strong>. For example, if you choose Gene "Adar", Disease "Acute Lung Injury" and Tissue "293T cell", the database will return all the data set that are related with "Adar" <strong>OR</strong> "Acute Lung Injury" <strong>OR</strong> "293T cell". 
+  </p></ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/OR.png')}}"> <br/></ul>
+  <ul>
+    <p>The relationship between "keyword" with the other three criteria ("Gene", "Disease" and "Tissue") is <strong>AND</strong>. For example, if you choose Gene "Adar", Disease "Acute Lung Injury" and Tissue "293T cell", and enter keyword "immune", then the database will filter the returned data sets by Gene "Adar", Disease "Acute Lung Injury" and "Tissue 293T cell" using keyword "immune". 
+    </p>
+  </ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/AND.png')}}"> <br/></ul>
+  <ul><h4>Filter your search</h4></ul>
+  <ul><p>After a successful search, you can even filter it with typing any word in the search box at the right side of <a href="{{url_for('home')}}">home</a> page
+      to show the entries containing that word.</p>
+  </ul>
+  <ul><p>
+      To sort the table click the caret icon available at every column heading.</p></ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/filter.png')}}"></ul>
+  <div class="page-header">
+    <h3>Why Use RNASeqMetaDB: Case studies</h3>
+  </div>
+  <ul>
+    <p> The following two case studies using two common diseases demonstrate the advantage of using RNASeqMetaDB instead of ArrayExpress, a major public repository of RNA-seq data. The comparisons suggest that our manual curation does improve the annotation of gene targeted mouse RNA-seq data.</p>
+  </ul>
+  <ul><h4>Case 1: Asthma</h4></ul>
+  <ul>
+    <p>By searching “asthma” filtered by organism “Mus musculus”, experiment type "rna assay” and experiment type "sequencing assay" in ArrayExpress, one data set was returned as shown in the following screenshot. There are mouse ChIP-Seq data and human RNA-Seq data in this data set, but there is no mouse RNA-Seq data. It appears that ArrayExpress only looks for “mouse” and “RNA-Seq” but does not check whether there are indeed mouse RNA-seq data in the results.</p>
+  </ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/asthma_AE.png')}}"> <br/></ul>
+  <ul>
+    <p>In comparison, as shown in the following screenshot, the query of “Asthma” in the “Disease” drop-down list in RNASeqMetaDB returned two data sets (E-GEOD-45975 and E-GEOD-49047).  The first data set E-GEOD-45975 is related to asthma because it contains RNA-seq data from Bach2 knock-out and polymorphisms in this gene are associated with autoimmune and allergic diseases including asthma. The second data set E-GEOD-49047 is also related to asthma because the data is for studying the effect of DDAH1 overexpression of an asthma mouse model. Both of the data sets are manually annotated as related to asthma but missed by ArrayExpress.</p>
+  </ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/asthma_metadb.png')}}"> <br/></ul>
+  <ul><h4>Case 2: Alzheimer’s disease</h4></ul>
+  <ul>
+    <p>By searching “Alzheimer’s disease” filtered by organism “Mus musculus”, experiment type "rna assay” and experiment type "sequencing assay" in ArrayExpress, four data sets are returned as shown the following screenshot.</p>
+  </ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/AD_AE.png')}}"> <br/></ul>
+  <ul>
+    <p>As shown in the following screenshot, the query of “Alzheimer disease” in the “Disease” drop-down list in RNASeqMetaDB returned three data sets.</p>
+  </ul>
+  <ul><img class="img-responsive img-thumbnail" style="width:70%" src="{{url_for('static',filename='resources/img/AD_metadb.png')}}"> <br/></ul>
+  <ul>
+    <p>ArrayExpress identified an amyotrophic lateral sclerosis (ALS) related data set E-GEOD-43366 as Alzheimer’s disease related. The reason that ArrayExpress returns this data set is because the phrase “Alzheimer’s disease” appears in the data set description (the description says “These ALS microglia showing substantial induction of a ‘neurodegeneration-tailored phenotype’, with induction of lysosomal, RNA splicing, and Alzheimer's disease pathway genes”). RNASeqMetaDB does not return this data set.</p>
+  </ul>
+  <ul>
+    <p>ArrayExpress identified E-GEOD-52024. This is a SuperSeries containing two SubSeries E-GEOD-52022 and E-GEOD-52023, among which only E-GEOD-52023 is an RNA-Seq data set. But ArrayExpress was not able to find this fine level of information. In contrast, RNASeqMetaDB accurately found the Alzheimer’s disease related data set E-GEOD-52023. This use case demonstrates that RNASeqMetaDB is able to provide data set information with fine granularity.</p>
+  </ul>
+  <ul>
+    <p>Besides, E-GEOD-58261 was found in RNASeqMetaDB but missed in ArrayExpress. E-GEOD-58261 contains RNA-Seq data from the mouse model of Dnmt1 conditional knock-out and the publication related with this data set suggests that Dnmt1 regulates common genes related with Alzheimer’s disease.</p>
+  </ul>
+  <ul>
+    <p>Both ArrayExpress and RNASeqMetaDB found E-GEOD-65159 as an Alzheimer’s disease related data set. In this data set, an Alzheimer’s disease mouse model was used to study the transcriptional dynamics.</p>
+  </ul>
+  <ul>
+    <p>E-ERAD-160 is currently not included in RNASeqMetaDB because there is not a publication associated with it which prevents us from manually curating more detailed information. Once such information is available, this data set will be included in RNASeqMetaDB along with detailed curation information.</p>
+  </ul>
+
+
+  <br/>
+  <br/>
 </div>
 {% endblock %}
