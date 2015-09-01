@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import random, string
 import sys
 import json
+import re
 from sqlalchemy import func
 from sqlalchemy import distinct
 from exception import *
@@ -52,6 +53,33 @@ def getAccByConstraints(constraints):
 		acc.update([ query.ArrayExpress for query in local_session.query(Tissue).filter_by(Tissue = constraints["Tissue"]).all()])
 	if len(constraints) == 0:
 		acc.update([ query.ArrayExpress for query in local_session.query(Main).all()])
+	local_session.close()
+	return acc		
+
+def getAccByKeyword(keywords):
+	local_session = db_session()
+	acc = set([])
+	k = [k for k in re.split(',| ',keywords) if k.strip() != "" ]
+	gene = []
+	disease = []
+	tissue = []
+	if len(k) == 1:
+		gene = [ i.ArrayExpress for i in local_session.query(Gene.ArrayExpress).filter_by(Gene = k[0])]
+		disease = [ i.ArrayExpress for i in local_session.query(Disease.ArrayExpress).filter_by(disease = k[0])]
+		tissue = [ i.ArrayExpress for i in local_session.query(Tissue.ArrayExpress).filter_by(Tissue = k[0])]
+	q_main = local_session.query(Main.ArrayExpress)
+	q_pub = local_session.query(Publication.ArrayExpress)
+	for keyword in k:
+		q_main = q_main.filter(Main.Title.like('%'+keyword+'%') | Main.description.like('%'+keyword+'%'))
+		q_pub = q_pub.filter(Publication.Title.like('%'+keyword+'%') | Publication.Abstract.like('%'+keyword+'%'))
+	if gene is not None:
+		acc.update(gene)
+	if disease is not None:
+		acc.update(disease)
+	if tissue is not None:
+		acc.update(tissue)
+	acc.update([i.ArrayExpress for i in q_main.all()])
+	acc.update([i.ArrayExpress for i in q_pub.all()])
 	local_session.close()
 	return acc		
 
@@ -112,11 +140,11 @@ def createUser(name, email, password,institution):
 	pwhash =  generate_password_hash(password)
 	randomcode = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 	newUser = User(name=name,
-					   email = email,
-					   pwhash = pwhash,
-					   institution = institution, 
-						 randomcode = randomcode,
-					   downloadedtimes = 0)
+			email = email,
+			pwhash = pwhash,
+			institution = institution, 
+			randomcode = randomcode,
+			downloadedtimes = 0)
 	local_session.add(newUser)
 	local_session.commit()
 	send_notification_email(newUser.name, newUser.email, newUser.randomcode)
@@ -159,10 +187,10 @@ def verifyUserEmail(email,randomcode):
 
 def saveToInquiry(ArrayExpress, PubMed, name, email, comments):
 	inquiry = Inquiry(ArrayExpress = ArrayExpress,
-						PubMed = ArrayExpress,
-						name = name, 
-						email = email, 
-						comments = comments )
+			PubMed = ArrayExpress,
+			name = name, 
+			email = email, 
+			comments = comments )
 	local_session = db_session()
 	local_session.add(inquiry)
 	local_session.commit()
@@ -180,7 +208,7 @@ def changeInquiryStatus(ID, status):
 	except:
 		return 0
 	return 5
-	
+
 def deleteInquiry(ID):
 	try:
 		inquiry = Inquiry.query.filter_by(id = ID).one()
@@ -196,9 +224,9 @@ def getAllInquiry():
 	query_main = Inquiry.query.all()
 	return query_main
 
-		
 
-   
+
+
 
 
 
