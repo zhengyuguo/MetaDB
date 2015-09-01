@@ -237,6 +237,25 @@ class User(Base):
 			'verified':self.verified,
 		}
 
+class IPCounter(Base):
+	__tablename__ = 'ipcounter'
+
+	IP = Column(String(200), primary_key=True)
+	logs = Column(TEXT)
+	counter = Column(Integer, nullable=False,default = 0)
+	lastvisted = Column(DATETIME)
+
+	@property
+	def serialize(self):
+		"""Return object data in easily serializeable format"""
+		return {
+			'IP': self.IP,
+			'actions':self.actions,
+			'email':self.email,
+			'counter':self.counter,
+			'lastvisted':self.lastvisted,
+		}
+
 
 if __name__ == '__main__':
 	init_db()

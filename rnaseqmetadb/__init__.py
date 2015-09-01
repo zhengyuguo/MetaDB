@@ -16,11 +16,13 @@ app = Flask(__name__)
 from email_helper import *
 from exception import *
 
+
+
+
 @app.route('/experiments/')
 @app.route('/')
 def home():
-	ip = request.remote_addr
-	print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",ip
+	recordActionOfIP(request,"visit a page")
 	gene_names = get_distinct_gene()
 	disease_names = get_distinct_disease()
 	tissue_names = get_distinct_tissue()
@@ -63,7 +65,6 @@ def datasets(AccessionID):
 @app.route('/statistics/')
 def statistics():
 	statistics =getStatistics()
-	
 	if statistics is None:
 		return render_template('404.html',accession = 'Statistics',login_session = login_session)
 	else:
