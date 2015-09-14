@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import NullPool
 
-engine =  create_engine('mysql://root:yulab@localhost/metaDB?charset=utf8', convert_unicode=True,pool_recycle=6,poolclass=NullPool)
+engine =  create_engine('mysql://root:mysql@localhost/metaDB?charset=utf8', convert_unicode=True,pool_recycle=6,poolclass=NullPool)
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
 Base = declarative_base()
@@ -235,6 +235,25 @@ class User(Base):
 			'randomcode':self.randomcode,
 			'ismanager':self.ismanager,
 			'verified':self.verified,
+		}
+
+class IPCounter(Base):
+	__tablename__ = 'ipcounter'
+
+	IP = Column(String(200), primary_key=True)
+	logs = Column(TEXT)
+	counter = Column(Integer, nullable=False,default = 0)
+	lastvisted = Column(DATETIME)
+
+	@property
+	def serialize(self):
+		"""Return object data in easily serializeable format"""
+		return {
+			'IP': self.IP,
+			'actions':self.actions,
+			'email':self.email,
+			'counter':self.counter,
+			'lastvisted':self.lastvisted,
 		}
 
 

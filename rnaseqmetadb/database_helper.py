@@ -9,6 +9,7 @@ import re
 from sqlalchemy import func
 from sqlalchemy import distinct
 from exception import *
+import datetime
 
 reload(sys)
 sys.setdefaultencoding('cp1252')
@@ -224,6 +225,29 @@ def getAllInquiry():
 	query_main = Inquiry.query.all()
 	return query_main
 
+
+def recordActionOfIP(request,action):
+	ip = request.remote_addr
+	local_session = db_session()
+	currentDateTime = datetime.datetime.utcnow()
+	query = local_session.query(IPCounter).filter_by(IP=ip)
+	action = currentDateTime.strftime("%Y-%m-%d %H:%M:%S") + ":"+action
+	if query.count() == 0:
+		ipObject = IPCounter(IP = ip,
+			logs = action,
+			counter = 1,
+			lastvisted = currentDateTime)
+	else:
+		ipObject = query.one()
+		if currentDateTime - ipObject.lastvisted >=  datetime.timedelta(days=1):
+			ipObject.counter = ipObject.counter + 1
+		ipObject.lastvisted = currentDateTime
+		ipObject.logs = ipObject.logs +','+action
+	local_session.add(ipObject)
+	local_session.commit()
+	local_session.close()
+
+	
 
 
 

@@ -16,13 +16,17 @@ app = Flask(__name__)
 from email_helper import *
 from exception import *
 
+
+
+
 @app.route('/experiments/')
 @app.route('/')
 def home():
+	recordActionOfIP(request,"visit a page")
 	gene_names = get_distinct_gene()
 	disease_names = get_distinct_disease()
 	tissue_names = get_distinct_tissue()
-	summary_table = get_summary_info_for_each_entry()
+	#summary_table = get_summary_info_for_each_entry()
 	constraints = {}
 
 	genename = request.args.get("genename")
@@ -42,22 +46,25 @@ def home():
 	if keyword:
 		 acc.intersection_update(set(getAccessionID(keyword)))
 		 
-	res = [entry for entry in summary_table if entry['ID'] in acc]
+	#res = [entry for entry in summary_table if entry['ID'] in acc]
+	res = [] 
 	return render_template('home.html',gene_names = gene_names, disease_names = disease_names, tissue_names = tissue_names, DATAs = res, login_session = login_session ) 
 
-@app.route('/experiments/<AccessionID>/')
+@app.route('/experiments/<AccessionID>/', methods=['GET', 'POST'])
 def datasets(AccessionID):
-	try:
-		data = getAllInfor(AccessionID)
-	except:
-		return render_template('404.html',accession = AccessionID,login_session = login_session)
+	if request.method == 'GET':
+		try:
+			data = getAllInfor(AccessionID)
+		except:
+			return render_template('404.html',accession = AccessionID,login_session = login_session)
+		else:
+			return render_template('datasets.html',data = data,login_session = login_session) # show complete info in datasets.html
 	else:
-		return render_template('datasets.html',data = data,login_session = login_session) # show complete info in datasets.html
+		return render_template('submission.html',login_session = login_session, AccessionID = AccessionID) 
 
 @app.route('/statistics/')
 def statistics():
 	statistics =getStatistics()
-	
 	if statistics is None:
 		return render_template('404.html',accession = 'Statistics',login_session = login_session)
 	else:
@@ -152,7 +159,7 @@ def verifyemail():
 @app.route('/submission/',   methods=['GET', 'POST'] )
 def submission():
 	if request.method == 'GET':
-		return render_template('submission.html',login_session = login_session) 
+		return render_template('submission.html',login_session = login_session,AccessionID = None) 
 	else:
 		ArrayExpress = str(request.form.get('AccessionID')).strip()
 		PubMed = str(request.form.get('PubMedID')).strip()
