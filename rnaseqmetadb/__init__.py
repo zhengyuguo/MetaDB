@@ -26,7 +26,7 @@ def home():
 	gene_names = get_distinct_gene()
 	disease_names = get_distinct_disease()
 	tissue_names = get_distinct_tissue()
-	#summary_table = get_summary_info_for_each_entry()
+	summary_table = get_summary_info_for_each_entry()
 	constraints = {}
 
 	genename = request.args.get("genename")
