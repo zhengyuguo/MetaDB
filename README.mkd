@@ -1,0 +1,8 @@
+# A Database for RNA-Seq dataset
+
+# Require
+- `MySQL`
+- `Python Flask`
+- `SQLAlchemy`
+
+# cite \href{https://doi.org/10.1093/bioinformatics/btv503}
